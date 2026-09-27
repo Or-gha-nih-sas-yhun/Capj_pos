@@ -126,7 +126,7 @@
                     </div>
 
                     <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-none sm:leading-tight">
-                        A simple and reliable point-of-sale system for your business.
+                        A Simple and Reliable Point-Of-Sale System for your Business.
                     </h1>
 
                     <p class="text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">

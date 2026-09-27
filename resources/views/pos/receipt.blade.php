@@ -53,8 +53,51 @@
         }
 
         .no-print {
-            margin-top: 15px;
-            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-print {
+            background-color: #0d6efd;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 22px;
+            font-size: 0.92rem;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(13, 110, 253, 0.25);
+            transition: all 0.15s ease-in-out;
+        }
+
+        .btn-print:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-1px);
+        }
+
+        .btn-back-orders {
+            background-color: #198754;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 18px;
+            font-size: 0.92rem;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 2px 4px rgba(25, 135, 84, 0.25);
+            transition: all 0.15s ease-in-out;
+        }
+
+        .btn-back-orders:hover {
+            background-color: #157347;
+            color: #ffffff;
+            transform: translateY(-1px);
         }
 
         @media print {
@@ -150,13 +193,9 @@
 
         <div class="dashed-line"></div>
 
-        <div class="text-center" style="font-size: 0.8rem; margin-top: 10px;">
-            {{ $shop['receipt_footer'] ?: 'Thank you for your order!' }}
-        </div>
-
         <div class="no-print">
-            <button onclick="window.print()" style="padding: 6px 12px; cursor: pointer;">Print Receipt</button>
-            <a href="{{ route('pos.index') }}" style="margin-left: 10px; font-size: 0.85rem;">Back to POS</a>
+            <button onclick="window.print()" class="btn-print">Print</button>
+            <a href="{{ route('pos.index') }}" class="btn-back-orders">Back to Orders</a>
         </div>
     </div>
 
