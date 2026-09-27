@@ -128,36 +128,6 @@
 
     <!-- Orders Data Table Card -->
     <div class="card card-custom p-4">
-        @if(auth()->user()->isAdmin())
-        <!-- Bulk Actions Floating/Header Bar -->
-        <div id="bulkActionsToolbar" class="d-none alert alert-light border border-primary-subtle shadow-sm py-2 px-3 mb-3 rounded-3 align-items-center justify-content-between flex-wrap gap-2">
-            <div class="d-flex align-items-center gap-2">
-                <span class="badge bg-primary rounded-pill px-2 py-1" id="selectedCountBadge">0</span>
-                <span class="fw-semibold text-dark small">orders selected</span>
-            </div>
-            <div class="d-flex align-items-center gap-2 ms-auto">
-                @if($tab !== 'archived')
-                    <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1 shadow-sm" onclick="bulkArchiveSelected()">
-                        <i class="fa-solid fa-box-archive"></i>
-                        <span>Archive Selected (<span class="selectedCountNum">0</span>)</span>
-                    </button>
-                @else
-                    <button type="button" class="btn btn-sm btn-success text-white d-flex align-items-center gap-1 shadow-sm" onclick="bulkRestoreSelected()">
-                        <i class="fa-solid fa-box-open"></i>
-                        <span>Unarchive Selected (<span class="selectedCountNum">0</span>)</span>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-danger d-flex align-items-center gap-1 shadow-sm" onclick="bulkForceDeleteSelected()">
-                        <i class="fa-solid fa-trash"></i>
-                        <span>Delete Selected (<span class="selectedCountNum">0</span>)</span>
-                    </button>
-                @endif
-                <button type="button" class="btn btn-sm btn-outline-secondary border-0" onclick="deselectAllOrders()">
-                    <i class="fa-solid fa-xmark me-1"></i> Deselect
-                </button>
-            </div>
-        </div>
-        @endif
-
         <div class="table-responsive" style="overflow-x: auto;">
             <table class="table table-hover align-middle mb-0" style="font-size: 0.9rem; min-width: 850px;">
                 <thead class="table-light">
@@ -433,7 +403,6 @@
         const visibleCheckedCount = visibleCheckboxes.filter(cb => cb.checked).length;
 
         const selectAllCb = document.getElementById('selectAllCheckbox');
-        const toolbar = document.getElementById('bulkActionsToolbar');
         const headerActions = document.getElementById('headerBulkActions');
 
         if (selectAllCb) {
@@ -441,10 +410,8 @@
             selectAllCb.indeterminate = visibleCheckedCount > 0 && visibleCheckedCount < visibleCount;
         }
 
-        // Update badge and count labels
+        // Update count labels in the actions header
         document.querySelectorAll('.selectedCountNum').forEach(el => el.textContent = count);
-        const countBadge = document.getElementById('selectedCountBadge');
-        if (countBadge) countBadge.textContent = count;
 
         // Toggle row highlight
         document.querySelectorAll('.order-select-box').forEach(cb => {
@@ -458,38 +425,18 @@
             }
         });
 
-        // Show / hide bulk toolbars
+        // Show / hide bulk actions beside the Actions heading
         if (count > 0) {
-            if (toolbar) {
-                toolbar.classList.remove('d-none');
-                toolbar.classList.add('d-flex');
-            }
             if (headerActions) {
                 headerActions.classList.remove('d-none');
                 headerActions.classList.add('d-inline-flex');
             }
         } else {
-            if (toolbar) {
-                toolbar.classList.add('d-none');
-                toolbar.classList.remove('d-flex');
-            }
             if (headerActions) {
                 headerActions.classList.add('d-none');
                 headerActions.classList.remove('d-inline-flex');
             }
         }
-    }
-
-    function deselectAllOrders() {
-        document.querySelectorAll('.order-select-box').forEach(cb => {
-            cb.checked = false;
-        });
-        const selectAllCb = document.getElementById('selectAllCheckbox');
-        if (selectAllCb) {
-            selectAllCb.checked = false;
-            selectAllCb.indeterminate = false;
-        }
-        updateBulkUI();
     }
 
     function postBulkForm(url, ids) {
