@@ -280,7 +280,9 @@
     <script>
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
-            const icon = document.getElementById('togglePasswordIcon');
+            const icon = document.getElementById('passwordToggleIcon');
+            if (!passwordInput || !icon) return;
+
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 icon.classList.remove('fa-eye');
@@ -378,19 +380,6 @@
                 hintText.innerText = `Password must be at least 6 characters long (${input.value.length}/6 entered).`;
                 hint.style.display = 'block';
                 input.classList.add('is-invalid');
-            }
-        function togglePasswordVisibility() {
-            const pwd = document.getElementById('password');
-            const icon = document.getElementById('passwordToggleIcon');
-            if (!pwd || !icon) return;
-            if (pwd.type === 'password') {
-                pwd.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                pwd.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
             }
         }
 
