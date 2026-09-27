@@ -214,42 +214,32 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-3xl p-8 sm:p-12 border border-red-100 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 
-                <!-- Mobile Phone Mockup -->
-                <div class="lg:col-span-4 flex justify-center">
-                    <div class="relative max-w-[280px]">
-                        <img src="{{ asset('images/pos_mobile_preview.jpg') }}" alt="CAPTAiN J Mobile POS App" class="w-full h-auto rounded-3xl shadow-xl border-4 border-slate-800">
+                <!-- App Details -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-red-600 rounded-full text-xs font-bold uppercase tracking-wider">
+                        <i class="fa-brands fa-android text-base"></i>
+                        Official Mobile App
                     </div>
-                </div>
-
-                <!-- App Details & QR Action -->
-                <div class="lg:col-span-5 space-y-6 text-center lg:text-left">
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">
                         CAPTAiN J POS on Android
                     </h2>
-                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
                         Take your POS system with you. Download the official CAPTAiN J Android application and access your business tools from your mobile device.
                     </p>
 
-                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-                        <a href="https://median.co/share/krkwrwz#apk" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl shadow-md transition-all">
+                    <div class="pt-2">
+                        <a href="https://median.co/share/krkwrwz#apk" target="_blank" class="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl shadow-lg shadow-red-500/20 hover:shadow-red-500/30 transition-all transform hover:-translate-y-0.5">
                             <i class="fa-solid fa-download"></i>
                             Download APK
                         </a>
-
-                        <button onclick="openQrModal()" class="inline-flex items-center gap-3 p-2 pr-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition-all group text-left cursor-pointer">
-                            <div class="w-12 h-12 bg-white rounded-lg border border-slate-200 p-1 flex items-center justify-center">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://median.co/share/krkwrwz%23apk" alt="QR Code" class="w-full h-full object-contain">
-                            </div>
-                            <span class="text-xs font-semibold text-slate-700 group-hover:text-red-600">Scan to Download</span>
-                        </button>
                     </div>
                 </div>
 
                 <!-- Android Compatibility Checklist -->
-                <div class="lg:col-span-3 bg-red-50/60 p-6 rounded-2xl border border-red-100 space-y-4">
+                <div class="lg:col-span-5 bg-red-50/60 p-6 sm:p-8 rounded-2xl border border-red-100 space-y-4">
                     <div class="flex items-center gap-3 text-emerald-600 font-bold text-sm">
                         <i class="fa-brands fa-android text-2xl text-emerald-500"></i>
-                        <span class="text-slate-900">Android</span>
+                        <span class="text-slate-900 text-base font-extrabold">Android App Features</span>
                     </div>
                     <ul class="space-y-3 text-xs sm:text-sm text-slate-700 font-medium">
                         <li class="flex items-start gap-2.5">
@@ -413,45 +403,8 @@
         </div>
     </footer>
 
-    <!-- QR CODE DOWNLOAD MODAL -->
-    <div id="qrModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden transition-opacity duration-300">
-        <div class="bg-white rounded-3xl max-w-xs w-full p-6 shadow-2xl relative text-center transform transition-transform scale-95 duration-300" id="modalCard">
-            
-            <!-- Close Button -->
-            <button onclick="closeQrModal()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-
-            <!-- QR Code Graphic Only -->
-            <div class="p-2 inline-block">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https://median.co/share/krkwrwz%23apk" alt="QR Code" class="w-56 h-56 mx-auto object-contain rounded-xl">
-            </div>
-
-        </div>
-    </div>
-
     <!-- JAVASCRIPT FOR INTERACTION -->
     <script>
-        function openQrModal() {
-            const modal = document.getElementById('qrModal');
-            const card = document.getElementById('modalCard');
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                card.classList.remove('scale-95');
-                card.classList.add('scale-100');
-            }, 10);
-        }
-
-        function closeQrModal() {
-            const modal = document.getElementById('qrModal');
-            const card = document.getElementById('modalCard');
-            card.classList.remove('scale-100');
-            card.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 200);
-        }
-
         function toggleFaq(btn) {
             const content = btn.nextElementSibling;
             const icon = btn.querySelector('i');
@@ -464,13 +417,6 @@
                 icon.classList.remove('rotate-180');
             }
         }
-
-        // Close modal on backdrop click
-        document.getElementById('qrModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeQrModal();
-            }
-        });
     </script>
 </body>
 </html>

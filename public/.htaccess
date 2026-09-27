@@ -1,8 +1,73 @@
-<IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
+# ==============================================================================
+# Security & Performance Configuration for Laravel Public Directory
+# ==============================================================================
 
+# Disable directory browsing & multi-views
+<IfModule mod_negotiation.c>
+    Options -MultiViews -Indexes
+</IfModule>
+
+# Disable Server Signature
+ServerSignature Off
+
+# ------------------------------------------------------------------------------
+# 1. Security Headers (mod_headers)
+# ------------------------------------------------------------------------------
+<IfModule mod_headers.c>
+    # Prevent Clickjacking (allow only same-origin framing)
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Prevent MIME-type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Enable XSS Filtering in legacy browsers
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Control referrer information sent on navigation
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Restrict sensitive browser APIs & permissions
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=()"
+
+    # HTTP Strict Transport Security (HSTS) - Enforce HTTPS
+    <If "%{HTTPS} == 'on'">
+        Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    </If>
+
+    # Remove server information headers if possible
+    Header unset X-Powered-By
+    Header always unset X-Powered-By
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# 2. Block Access to Hidden & Sensitive Files
+# ------------------------------------------------------------------------------
+# Block dotfiles (.env, .git, .htaccess, etc.)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block backup, configuration, database, and log files
+<FilesMatch "(^#.*#|\.(bak|config|dist|fla|inc|ini|log|psd|sh|sql|sw[op]|yaml|yml|lock|env.*))$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ------------------------------------------------------------------------------
+# 3. Laravel URL Rewriting & Front Controller (mod_rewrite)
+# ------------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
     RewriteEngine On
 
     # Handle Authorization Header
