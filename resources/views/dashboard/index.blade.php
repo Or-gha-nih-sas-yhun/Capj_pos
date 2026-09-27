@@ -8,18 +8,18 @@
     .card-custom {
         background: #ffffff;
         border: 1px solid #f1f5f9;
-        border-radius: 0.85rem;
-        box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.04);
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
     }
 
     /* Welcome Alert */
     .welcome-msg {
         background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
-        padding: 0.4rem 0.85rem;
-        border-radius: 0.65rem;
+        padding: 0.5rem 1rem;
+        border-radius: 0.75rem;
         color: #fff;
         font-weight: 600;
-        font-size: 0.78rem;
+        font-size: 0.82rem;
         box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15);
         display: flex;
         align-items: center;
@@ -29,52 +29,52 @@
     /* KPI Tiles matching Sales Report */
     .kpi-tile {
         background: #ffffff;
-        border-radius: 0.75rem;
-        padding: 0.45rem 0.75rem;
-        box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.04);
+        border-radius: 0.85rem;
+        padding: 0.85rem 1rem;
+        box-shadow: 0 4px 12px -3px rgba(0, 0, 0, 0.05);
         border: 1px solid #f1f5f9;
         display: flex;
         align-items: center;
-        gap: 0.65rem;
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        gap: 0.85rem;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
         height: 100%;
     }
     .kpi-tile:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 5px 14px -2px rgba(0, 0, 0, 0.07);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px -3px rgba(0, 0, 0, 0.08);
     }
     .kpi-tile-icon {
-        width: 34px;
-        height: 34px;
-        border-radius: 0.55rem;
+        width: 40px;
+        height: 40px;
+        border-radius: 0.65rem;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #fff;
-        font-size: 0.9rem;
+        font-size: 1rem;
         flex-shrink: 0;
     }
     .kpi-tile-label {
-        font-size: 0.62rem;
+        font-size: 0.66rem;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.05em;
         font-weight: 700;
         color: #64748b;
-        margin-bottom: 0.05rem;
+        margin-bottom: 0.1rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
     .kpi-tile-value {
-        font-size: 1.05rem;
+        font-size: 1.25rem;
         font-weight: 800;
         color: #0f172a;
         margin: 0;
-        line-height: 1.1;
+        line-height: 1.15;
     }
-    .kpi-trend-up { color: #16a34a; font-weight: 700; font-size: 0.65rem; }
-    .kpi-trend-down { color: #dc2626; font-weight: 700; font-size: 0.65rem; }
-    .kpi-trend-flat { color: #94a3b8; font-weight: 700; font-size: 0.65rem; }
+    .kpi-trend-up { color: #16a34a; font-weight: 700; font-size: 0.7rem; }
+    .kpi-trend-down { color: #dc2626; font-weight: 700; font-size: 0.7rem; }
+    .kpi-trend-flat { color: #94a3b8; font-weight: 700; font-size: 0.7rem; }
 
     /* Filter pill tabs matching Sales Report */
     .period-tab {
@@ -82,8 +82,8 @@
         background: #ffffff;
         color: #475569;
         font-weight: 600;
-        font-size: 0.74rem;
-        padding: 0.28rem 0.75rem;
+        font-size: 0.82rem;
+        padding: 0.4rem 1rem;
         border-radius: 2rem;
         text-decoration: none;
         transition: all 0.15s ease;
@@ -102,33 +102,54 @@
         box-shadow: 0 4px 10px -3px rgba(241, 0, 0, 0.45);
     }
 
-    /* Main Chart Container */
+    /* Main Chart Container matching Sales Report */
     .chart-container-card {
         background: #ffffff;
-        border-radius: 0.85rem;
+        border-radius: 1rem;
         border: 1px solid #f1f5f9;
-        box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.04);
-        padding: 0.75rem 1rem;
+        box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
+        padding: 1.25rem;
         height: 100%;
         display: flex;
         flex-direction: column;
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+    .chart-container-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.08);
+        border-color: #cbd5e1;
     }
     .report-chart-wrap {
         position: relative;
-        height: 195px;
+        height: 290px;
         width: 100%;
         flex: 1;
-        min-height: 175px;
+        min-height: 270px;
+    }
+
+    /* Right Column Cards matching Sales Report */
+    .side-info-card {
+        background: #ffffff;
+        border: 1px solid #f1f5f9;
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
+        padding: 1.25rem;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .side-info-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.08);
     }
 
     /* Payment Badges matching Sales Report */
     .pay-badge {
         display: inline-flex;
         align-items: center;
-        gap: 0.35rem;
-        padding: 0.2em 0.55em;
+        gap: 0.4rem;
+        padding: 0.28em 0.65em;
         border-radius: 999px;
-        font-size: 0.72rem;
+        font-size: 0.78rem;
         font-weight: 700;
         letter-spacing: 0.01em;
         white-space: nowrap;
@@ -142,12 +163,12 @@
         background: #1a56db;
         color: #fff;
         border-radius: 50%;
-        width: 15px;
-        height: 15px;
+        width: 17px;
+        height: 17px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.55rem;
+        font-size: 0.6rem;
         flex-shrink: 0;
     }
     .pay-badge-cash {
@@ -159,42 +180,50 @@
         background: #16a34a;
         color: #fff;
         border-radius: 50%;
-        width: 15px;
-        height: 15px;
+        width: 17px;
+        height: 17px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.55rem;
+        font-size: 0.6rem;
         flex-shrink: 0;
     }
 
-    /* Compact Bottom Tables */
+    /* Bottom Table Cards with Interactive Zoom */
     .bottom-table-card {
         background: #ffffff;
         border: 1px solid #f1f5f9;
-        border-radius: 0.75rem;
-        box-shadow: 0 3px 10px -2px rgba(0, 0, 0, 0.03);
-        padding: 0.55rem 0.75rem;
+        border-radius: 0.95rem;
+        box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.04);
+        padding: 0.95rem 1.15rem;
         height: 100%;
         display: flex;
         flex-direction: column;
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+    .bottom-table-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.08);
+        border-color: #cbd5e1;
     }
     .bottom-table-wrap {
-        max-height: 125px;
+        max-height: 195px;
+        min-height: 170px;
         overflow-y: auto;
         flex: 1;
     }
     .bottom-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.74rem;
+        font-size: 0.82rem;
     }
     .bottom-table th {
-        font-size: 0.62rem;
+        font-size: 0.7rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.03em;
-        padding: 0.28rem 0.45rem;
+        padding: 0.45rem 0.65rem;
         background-color: #f8fafc;
         color: #64748b;
         border-bottom: 1px solid #e2e8f0;
@@ -203,7 +232,7 @@
         z-index: 1;
     }
     .bottom-table td {
-        padding: 0.28rem 0.45rem;
+        padding: 0.45rem 0.65rem;
         border-bottom: 1px solid #f1f5f9;
         color: #1e293b;
     }
@@ -254,31 +283,44 @@
     .chart-modal-close:hover {
         color: #0f172a;
     }
+
+    #tableModalBody {
+        overflow-y: auto;
+        flex: 1;
+        margin-top: 1rem;
+    }
+    #tableModalBody table {
+        font-size: 0.95rem !important;
+    }
+    #tableModalBody th,
+    #tableModalBody td {
+        padding: 0.75rem 1rem !important;
+    }
 </style>
 @endpush
 
 @section('content')
-<div class="container-fluid px-3 py-1">
+<div class="container-fluid px-3 py-2">
 
     @if(session('status') == 'login_success')
-        <div id="welcome" class="welcome-msg mb-1">
+        <div id="welcome" class="welcome-msg mb-3">
             <span><i class="fa-solid fa-circle-check me-2"></i> Welcome back, <strong>{{ auth()->user()->full_name ?? auth()->user()->username }}</strong>!</span>
             <button type="button" class="btn-close btn-close-white btn-sm" onclick="this.parentElement.remove()"></button>
         </div>
     @endif
 
     <!-- Header matching Sales Report -->
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
         <div>
-            <h5 class="fw-bold m-0 text-dark">
+            <h4 class="fw-bold m-0 text-dark">
                 <i class="fa-solid fa-chart-pie text-danger me-2"></i> Dashboard Overview
-            </h5>
-            <p class="text-secondary small m-0" style="font-size: 0.75rem;">
+            </h4>
+            <p class="text-secondary small m-0" style="font-size: 0.82rem;">
                 Real-time business performance, sales analytics, and inventory metrics.
             </p>
         </div>
         <div>
-            <span class="badge bg-dark-subtle text-dark fw-semibold px-3 py-1 rounded-pill" style="font-size: 0.74rem;">
+            <span class="badge bg-dark-subtle text-dark fw-semibold px-3 py-2 rounded-pill" style="font-size: 0.8rem;">
                 <i class="fa-regular fa-calendar me-1"></i>
                 {{ $footer_date_start }} &ndash; {{ $footer_date_end }}
             </span>
@@ -286,10 +328,10 @@
     </div>
 
     <!-- Filter Card Setup matching Sales Report -->
-    <div class="card card-custom p-2 mb-2">
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="card card-custom p-3 mb-3">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
             <!-- Chart / Period Filters -->
-            <div class="d-flex flex-wrap gap-1" id="chartFilterTabs">
+            <div class="d-flex flex-wrap gap-2" id="chartFilterTabs">
                 <button type="button" class="period-tab active" data-chart="daily" onclick="switchChart('daily', this)">
                     <i class="fa-solid fa-calendar-day me-1"></i> Daily Sales
                 </button>
@@ -311,27 +353,27 @@
             </div>
 
             <!-- Date Form Filter -->
-            <form method="GET" action="{{ route('dashboard') }}" class="d-flex flex-wrap align-items-end gap-1">
+            <form method="GET" action="{{ route('dashboard') }}" class="d-flex flex-wrap align-items-end gap-2">
                 <div class="d-flex align-items-center gap-1">
-                    <span class="small fw-semibold text-secondary" style="font-size: 0.73rem;">From</span>
-                    <input type="date" name="date_from" value="{{ request('date_from') }}" class="form-control form-control-sm" style="font-size: 0.73rem; padding: 0.2rem 0.45rem; width: 125px;">
+                    <span class="small fw-semibold text-secondary" style="font-size: 0.8rem;">From</span>
+                    <input type="date" name="date_from" value="{{ request('date_from') }}" class="form-control form-control-sm" style="font-size: 0.8rem; padding: 0.35rem 0.65rem; width: 135px;">
                 </div>
                 <div class="d-flex align-items-center gap-1">
-                    <span class="small fw-semibold text-secondary" style="font-size: 0.73rem;">To</span>
-                    <input type="date" name="date_to" value="{{ request('date_to') }}" class="form-control form-control-sm" style="font-size: 0.73rem; padding: 0.2rem 0.45rem; width: 125px;">
+                    <span class="small fw-semibold text-secondary" style="font-size: 0.8rem;">To</span>
+                    <input type="date" name="date_to" value="{{ request('date_to') }}" class="form-control form-control-sm" style="font-size: 0.8rem; padding: 0.35rem 0.65rem; width: 135px;">
                 </div>
-                <button type="submit" class="btn btn-primary btn-sm fw-semibold px-2 py-1 shadow-sm" style="font-size: 0.73rem;">
+                <button type="submit" class="btn btn-primary btn-sm fw-semibold px-3 py-1 shadow-sm" style="font-size: 0.8rem;">
                     <i class="fa-solid fa-filter me-1"></i> Apply
                 </button>
                 @if(request('date_from') || request('date_to'))
-                    <a href="{{ route('dashboard') }}" class="btn btn-light border btn-sm fw-semibold px-2 py-1" style="font-size: 0.73rem;">Clear</a>
+                    <a href="{{ route('dashboard') }}" class="btn btn-light border btn-sm fw-semibold px-3 py-1" style="font-size: 0.8rem;">Clear</a>
                 @endif
             </form>
         </div>
     </div>
 
     <!-- KPI Row (6 Tiles matching Sales Report style) -->
-    <div class="row g-2 mb-2">
+    <div class="row g-3 mb-3">
         <!-- KPI 1: Sales Today -->
         <div class="col-6 col-md-4 col-xl-2">
             <div class="kpi-tile">
@@ -347,7 +389,7 @@
                             $dir = $today_pct >= 0 ? 'kpi-trend-up' : 'kpi-trend-down';
                             $arrow = $today_pct >= 0 ? '&#9650;' : '&#9660;';
                         @endphp
-                        <span class="{{ $dir }}">{!! $arrow !!} {{ abs($today_pct) }}%</span> <span class="text-muted" style="font-size: 0.63rem;">vs yest</span>
+                        <span class="{{ $dir }}">{!! $arrow !!} {{ abs($today_pct) }}%</span> <span class="text-muted" style="font-size: 0.68rem;">vs yest</span>
                     </div>
                 </div>
             </div>
@@ -368,7 +410,7 @@
                             $m_dir = $m_rev_pct >= 0 ? 'kpi-trend-up' : 'kpi-trend-down';
                             $m_arrow = $m_rev_pct >= 0 ? '&#9650;' : '&#9660;';
                         @endphp
-                        <span class="{{ $m_dir }}">{!! $m_arrow !!} {{ abs($m_rev_pct) }}%</span> <span class="text-muted" style="font-size: 0.63rem;">vs last mo</span>
+                        <span class="{{ $m_dir }}">{!! $m_arrow !!} {{ abs($m_rev_pct) }}%</span> <span class="text-muted" style="font-size: 0.68rem;">vs last mo</span>
                     </div>
                 </div>
             </div>
@@ -389,7 +431,7 @@
                             $o_dir = $o_pct >= 0 ? 'kpi-trend-up' : 'kpi-trend-down';
                             $o_arrow = $o_pct >= 0 ? '&#9650;' : '&#9660;';
                         @endphp
-                        <span class="{{ $o_dir }}">{!! $o_arrow !!} {{ abs($o_pct) }}%</span> <span class="text-muted" style="font-size: 0.63rem;">vs last mo</span>
+                        <span class="{{ $o_dir }}">{!! $o_arrow !!} {{ abs($o_pct) }}%</span> <span class="text-muted" style="font-size: 0.68rem;">vs last mo</span>
                     </div>
                 </div>
             </div>
@@ -410,7 +452,7 @@
                             $a_dir = $a_pct >= 0 ? 'kpi-trend-up' : 'kpi-trend-down';
                             $a_arrow = $a_pct >= 0 ? '&#9650;' : '&#9660;';
                         @endphp
-                        <span class="{{ $a_dir }}">{!! $a_arrow !!} {{ abs($a_pct) }}%</span> <span class="text-muted" style="font-size: 0.63rem;">vs last mo</span>
+                        <span class="{{ $a_dir }}">{!! $a_arrow !!} {{ abs($a_pct) }}%</span> <span class="text-muted" style="font-size: 0.68rem;">vs last mo</span>
                     </div>
                 </div>
             </div>
@@ -424,10 +466,10 @@
                 </div>
                 <div class="flex-grow-1" style="min-width: 0;">
                     <div class="kpi-tile-label">Best Seller</div>
-                    <div class="kpi-tile-value text-truncate" style="font-size: 0.92rem;" title="{{ $best_product_name }}">
+                    <div class="kpi-tile-value text-truncate" style="font-size: 1rem;" title="{{ $best_product_name }}">
                         {{ $best_product_name }}
                     </div>
-                    <div class="mt-0 text-muted" style="font-size: 0.63rem;">
+                    <div class="mt-0 text-muted" style="font-size: 0.68rem;">
                         <i class="fa-solid fa-bag-shopping me-1 text-primary"></i><strong>{{ number_format($best_product_count) }}</strong> orders
                     </div>
                 </div>
@@ -445,32 +487,32 @@
                     <div class="kpi-tile-value" style="color: {{ $sales_growth >= 0 ? '#16a34a' : '#dc2626' }};">
                         {!! $sales_growth >= 0 ? '&#9650;' : '&#9660;' !!} {{ abs($sales_growth) }}%
                     </div>
-                    <div class="mt-0 text-muted" style="font-size: 0.63rem;">vs last month</div>
+                    <div class="mt-0 text-muted" style="font-size: 0.68rem;">vs last month</div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Middle Row: Left Chart Column (8 cols), Right Best Seller + Payments (4 cols) -->
-    <div class="row g-2 mb-2">
+    <div class="row g-3 mb-3">
         <!-- Interactive Main Chart Column -->
         <div class="col-12 col-xl-8">
-            <div class="chart-container-card">
-                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-1">
+            <div class="chart-container-card" onclick="openActiveChartZoom()" title="Click to enlarge chart">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
                     <div>
-                        <h6 class="fw-bold m-0 text-dark" id="mainChartTitle" style="font-size: 0.88rem;">
-                            <i class="fa-solid fa-calendar-day text-info me-1"></i>Daily Sales Trend
-                        </h6>
-                        <span class="text-muted" style="font-size: 0.68rem;" id="mainChartSubtitle">Revenue analytics and transaction trajectory.</span>
+                        <h5 class="fw-bold m-0 text-dark" id="mainChartTitle">
+                            <i class="fa-solid fa-calendar-day text-info me-2"></i>Daily Sales Trend
+                        </h5>
+                        <span class="text-muted small" id="mainChartSubtitle">Revenue analytics and transaction trajectory.</span>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                        <div id="chartBadgesContainer" class="small">
-                            <span class="badge bg-danger-subtle text-danger" id="badgeOne" style="font-size: 0.65rem;">Revenue</span>
-                            <span class="badge bg-primary-subtle text-primary" id="badgeTwo" style="font-size: 0.65rem;">Sales (₱)</span>
+                        <div id="chartBadgesContainer">
+                            <span class="badge bg-danger-subtle text-danger" id="badgeOne">Revenue</span>
+                            <span class="badge bg-primary-subtle text-primary" id="badgeTwo">Sales (₱)</span>
                         </div>
-                        <button type="button" class="btn btn-light btn-sm border py-0 px-2 text-muted" onclick="openActiveChartZoom()" title="Zoom Chart" style="font-size: 0.72rem;">
+                        <span class="badge bg-light text-muted border py-1 px-2" title="Zoom Chart">
                             <i class="fa-solid fa-magnifying-glass-plus"></i>
-                        </button>
+                        </span>
                     </div>
                 </div>
 
@@ -481,92 +523,99 @@
         </div>
 
         <!-- Right Side: Best Seller & Payment Methods -->
-        <div class="col-12 col-xl-4 d-flex flex-column gap-2">
+        <div class="col-12 col-xl-4 d-flex flex-column gap-3">
             <!-- Best Seller Card (Matching Sales Report) -->
-            <div class="card card-custom p-2 flex-shrink-0">
-                <div class="d-flex align-items-center justify-content-between mb-1">
-                    <span class="fw-bold text-dark" style="font-size: 0.78rem;">
-                        <i class="fa-solid fa-crown text-warning me-1"></i> Best Seller
-                    </span>
-                    <span class="badge bg-warning-subtle text-warning-emphasis fw-bold" style="font-size: 0.62rem;">Top Performer</span>
+            <div class="side-info-card" onclick="openCardZoom('bestSellerCardContent', 'Best Seller Details')" title="Click to view details" style="cursor: pointer;">
+                <div id="bestSellerCardContent">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="fw-bold text-dark fs-6">
+                            <i class="fa-solid fa-crown text-warning me-2"></i> Best Seller
+                        </span>
+                        <span class="badge bg-warning-subtle text-warning-emphasis fw-bold">Top Performer</span>
+                    </div>
+                    @if($best_product_name !== 'N/A')
+                        <h4 class="fw-bold text-dark text-truncate mb-2" title="{{ $best_product_name }}">
+                            {{ $best_product_name }}
+                        </h4>
+                        <div class="d-flex flex-wrap gap-4 pt-2 mt-1 border-top border-light-subtle">
+                            <div>
+                                <div class="kpi-tile-label">Qty Sold</div>
+                                <div class="fw-bold fs-5 text-primary">{{ number_format($best_product_qty) }}</div>
+                            </div>
+                            <div>
+                                <div class="kpi-tile-label">Revenue</div>
+                                <div class="fw-bold fs-5 text-success">₱{{ number_format($best_product_revenue, 2) }}</div>
+                            </div>
+                            <div>
+                                <div class="kpi-tile-label">Share</div>
+                                <div class="fw-bold fs-5 text-dark">{{ $best_product_share }}%</div>
+                            </div>
+                        </div>
+                    @else
+                        <p class="text-muted small m-0">No products sold in this period.</p>
+                    @endif
                 </div>
-                @if($best_product_name !== 'N/A')
-                    <div class="fw-bold text-dark text-truncate mb-1" style="font-size: 0.95rem;" title="{{ $best_product_name }}">
-                        {{ $best_product_name }}
-                    </div>
-                    <div class="d-flex justify-content-between pt-1 border-top border-light-subtle" style="font-size: 0.75rem;">
-                        <div>
-                            <div class="kpi-tile-label">Qty Sold</div>
-                            <div class="fw-bold text-primary">{{ number_format($best_product_qty) }}</div>
-                        </div>
-                        <div>
-                            <div class="kpi-tile-label">Revenue</div>
-                            <div class="fw-bold text-success">₱{{ number_format($best_product_revenue, 2) }}</div>
-                        </div>
-                        <div>
-                            <div class="kpi-tile-label">Share</div>
-                            <div class="fw-bold text-dark">{{ $best_product_share }}%</div>
-                        </div>
-                    </div>
-                @else
-                    <p class="text-muted small m-0">No products sold in this period.</p>
-                @endif
             </div>
 
             <!-- Payment Methods Card -->
-            <div class="card card-custom p-2 flex-grow-1 d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-center mb-1 pb-1 border-bottom border-light-subtle">
-                    <span class="fw-bold text-dark" style="font-size: 0.78rem;">
-                        <i class="fa-solid fa-credit-card text-info me-1"></i> Payment Methods
-                    </span>
-                    <span class="badge bg-light text-muted border" style="font-size: 0.62rem;">Live Breakdown</span>
-                </div>
+            <div class="side-info-card flex-grow-1 d-flex flex-column" onclick="openCardZoom('paymentMethodsCardContent', 'Payment Methods Breakdown')" title="Click to view details" style="cursor: pointer;">
+                <div id="paymentMethodsCardContent" class="h-100 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-light-subtle">
+                        <span class="fw-bold text-dark fs-6">
+                            <i class="fa-solid fa-credit-card text-info me-2"></i> Payment Methods
+                        </span>
+                        <span class="badge bg-light text-muted border">Live Breakdown</span>
+                    </div>
 
-                <div class="flex-grow-1" style="max-height: 100px; overflow-y: auto;">
-                    @forelse($payment_summary as $row)
-                        <div class="d-flex justify-content-between align-items-center py-1 {{ !$loop->last ? 'border-bottom border-light-subtle' : '' }}">
-                            <div>
-                                @if(strtolower($row['method']) === 'gcash')
-                                    <span class="pay-badge pay-badge-gcash">
-                                        <span class="pay-icon"><i class="fa-solid fa-mobile-screen-button"></i></span>
-                                        GCash
+                    <div class="flex-grow-1" style="max-height: 140px; overflow-y: auto;">
+                        @forelse($payment_summary as $row)
+                            <div class="d-flex justify-content-between align-items-center py-2 {{ !$loop->last ? 'border-bottom border-light-subtle' : '' }}">
+                                <div>
+                                    @if(strtolower($row['method']) === 'gcash')
+                                        <span class="pay-badge pay-badge-gcash">
+                                            <span class="pay-icon"><i class="fa-solid fa-mobile-screen-button"></i></span>
+                                            GCash
+                                        </span>
+                                    @else
+                                        <span class="pay-badge pay-badge-cash">
+                                            <span class="pay-icon"><i class="fa-solid fa-money-bill"></i></span>
+                                            {{ $row['method'] }}
+                                        </span>
+                                    @endif
+                                    <span class="text-muted ms-2 small">
+                                        {{ number_format($row['orders_count']) }} {{ Str::plural('order', $row['orders_count']) }}
                                     </span>
-                                @else
-                                    <span class="pay-badge pay-badge-cash">
-                                        <span class="pay-icon"><i class="fa-solid fa-money-bill"></i></span>
-                                        {{ $row['method'] }}
-                                    </span>
-                                @endif
-                                <span class="text-muted ms-1" style="font-size: 0.68rem;">
-                                    {{ number_format($row['orders_count']) }} {{ Str::plural('order', $row['orders_count']) }}
-                                </span>
+                                </div>
+                                <div class="fw-bold text-dark">₱{{ number_format($row['revenue'], 2) }}</div>
                             </div>
-                            <div class="fw-bold text-dark" style="font-size: 0.8rem;">₱{{ number_format($row['revenue'], 2) }}</div>
-                        </div>
-                    @empty
-                        <p class="text-muted small m-0 py-1" style="font-size: 0.72rem;">No payments recorded.</p>
-                    @endforelse
+                        @empty
+                            <p class="text-muted small m-0 py-2">No payments recorded.</p>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Row: 4 Performance Tables (Directly down to occupy empty space and fit container) -->
-    <div class="row g-2">
+    <!-- Bottom Row: 4 Performance Tables with Click-to-Zoom -->
+    <div class="row g-3">
         <!-- Table 1: Top 5 Best Sellers -->
         <div class="col-12 col-md-6 col-xl-3">
-            <div class="bottom-table-card">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark" style="font-size: 0.75rem;">
+            <div class="bottom-table-card" onclick="openTableZoom('tableBestSellers', 'Top 5 Best-Selling Products')" title="Click to enlarge Best Sellers table">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-bold text-dark" style="font-size: 0.85rem;">
                         <i class="fa-solid fa-crown text-warning me-1"></i> Best Sellers
                     </span>
-                    <span class="badge bg-warning-subtle text-warning-emphasis" style="font-size: 0.6rem;">Top 5</span>
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="badge bg-warning-subtle text-warning-emphasis">Top 5</span>
+                        <span class="badge bg-light text-muted border"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+                    </div>
                 </div>
                 <div class="bottom-table-wrap">
-                    <table class="bottom-table">
+                    <table class="bottom-table" id="tableBestSellers">
                         <thead>
                             <tr>
-                                <th style="width: 20px;">#</th>
+                                <th style="width: 25px;">#</th>
                                 <th>Product</th>
                                 <th class="text-end">Qty</th>
                                 <th class="text-end">Revenue</th>
@@ -576,12 +625,12 @@
                             @forelse($top5_products as $i => $row)
                                 <tr>
                                     <td class="fw-bold text-muted">{{ $i + 1 }}</td>
-                                    <td class="fw-semibold text-dark text-truncate" style="max-width: 95px;" title="{{ $row['name'] }}">{{ $row['name'] }}</td>
+                                    <td class="fw-semibold text-dark text-truncate" style="max-width: 105px;" title="{{ $row['name'] }}">{{ $row['name'] }}</td>
                                     <td class="text-end fw-bold text-primary">{{ number_format($row['qty_sold']) }}</td>
                                     <td class="text-end fw-semibold text-success">₱{{ number_format($row['revenue'], 2) }}</td>
                                 </tr>
                             @empty
-                                <tr><td colspan="4" class="text-center text-muted py-2">No data</td></tr>
+                                <tr><td colspan="4" class="text-center text-muted py-3">No data</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -591,18 +640,21 @@
 
         <!-- Table 2: Top 5 Slow-Moving Products -->
         <div class="col-12 col-md-6 col-xl-3">
-            <div class="bottom-table-card">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark" style="font-size: 0.75rem;">
+            <div class="bottom-table-card" onclick="openTableZoom('tableSlowMoving', 'Top 5 Slow-Moving Products')" title="Click to enlarge Slow Moving table">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-bold text-dark" style="font-size: 0.85rem;">
                         <i class="fa-solid fa-arrow-trend-down text-danger me-1"></i> Slow Moving
                     </span>
-                    <span class="badge bg-danger-subtle text-danger" style="font-size: 0.6rem;">Bottom 5</span>
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="badge bg-danger-subtle text-danger">Bottom 5</span>
+                        <span class="badge bg-light text-muted border"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+                    </div>
                 </div>
                 <div class="bottom-table-wrap">
-                    <table class="bottom-table">
+                    <table class="bottom-table" id="tableSlowMoving">
                         <thead>
                             <tr>
-                                <th style="width: 20px;">#</th>
+                                <th style="width: 25px;">#</th>
                                 <th>Product</th>
                                 <th class="text-end">Qty</th>
                                 <th class="text-end">Revenue</th>
@@ -612,12 +664,12 @@
                             @forelse($least5_products as $i => $row)
                                 <tr>
                                     <td class="fw-bold text-muted">{{ $i + 1 }}</td>
-                                    <td class="fw-semibold text-dark text-truncate" style="max-width: 95px;" title="{{ $row['name'] }}">{{ $row['name'] }}</td>
+                                    <td class="fw-semibold text-dark text-truncate" style="max-width: 105px;" title="{{ $row['name'] }}">{{ $row['name'] }}</td>
                                     <td class="text-end fw-bold text-primary">{{ number_format($row['qty_sold']) }}</td>
                                     <td class="text-end fw-semibold text-success">₱{{ number_format($row['revenue'], 2) }}</td>
                                 </tr>
                             @empty
-                                <tr><td colspan="4" class="text-center text-muted py-2">No data</td></tr>
+                                <tr><td colspan="4" class="text-center text-muted py-3">No data</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -627,15 +679,18 @@
 
         <!-- Table 3: Monthly Growth Summary -->
         <div class="col-12 col-md-6 col-xl-3">
-            <div class="bottom-table-card">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark" style="font-size: 0.75rem;">
+            <div class="bottom-table-card" onclick="openTableZoom('tableMonthlyGrowth', 'Monthly Growth Summary')" title="Click to enlarge Growth Summary table">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-bold text-dark" style="font-size: 0.85rem;">
                         <i class="fa-solid fa-chart-line text-primary me-1"></i> Monthly Growth
                     </span>
-                    <span class="badge bg-primary-subtle text-primary" style="font-size: 0.6rem;">Periods</span>
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="badge bg-primary-subtle text-primary">Periods</span>
+                        <span class="badge bg-light text-muted border"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+                    </div>
                 </div>
                 <div class="bottom-table-wrap">
-                    <table class="bottom-table">
+                    <table class="bottom-table" id="tableMonthlyGrowth">
                         <thead>
                             <tr>
                                 <th>Period</th>
@@ -646,7 +701,7 @@
                         <tbody>
                             @forelse($growth_rows as $i => $row)
                                 <tr>
-                                    <td class="fw-semibold text-dark text-truncate" style="max-width: 90px;">{{ $row['period'] }}</td>
+                                    <td class="fw-semibold text-dark text-truncate" style="max-width: 95px;">{{ $row['period'] }}</td>
                                     <td class="text-end fw-bold text-success">₱{{ number_format($row['total'], 2) }}</td>
                                     <td class="text-end">
                                         @if($i === 0)
@@ -663,7 +718,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr><td colspan="3" class="text-center text-muted py-2">No data</td></tr>
+                                <tr><td colspan="3" class="text-center text-muted py-3">No data</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -673,15 +728,18 @@
 
         <!-- Table 4: Daily Summary Log -->
         <div class="col-12 col-md-6 col-xl-3">
-            <div class="bottom-table-card">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-bold text-dark" style="font-size: 0.75rem;">
+            <div class="bottom-table-card" onclick="openTableZoom('tableDailySummary', 'Daily Sales Summary Log')" title="Click to enlarge Daily Summary table">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-bold text-dark" style="font-size: 0.85rem;">
                         <i class="fa-solid fa-receipt text-info me-1"></i> Daily Summary
                     </span>
-                    <span class="badge bg-info-subtle text-info-emphasis" style="font-size: 0.6rem;">Timeline</span>
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="badge bg-info-subtle text-info-emphasis">Timeline</span>
+                        <span class="badge bg-light text-muted border"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+                    </div>
                 </div>
                 <div class="bottom-table-wrap">
-                    <table class="bottom-table">
+                    <table class="bottom-table" id="tableDailySummary">
                         <thead>
                             <tr>
                                 <th>Date</th>
@@ -697,7 +755,7 @@
                                     <td class="text-end fw-bold text-success">₱{{ number_format($row['total_sales'], 2) }}</td>
                                 </tr>
                             @empty
-                                <tr><td colspan="3" class="text-center text-muted py-2">No data</td></tr>
+                                <tr><td colspan="3" class="text-center text-muted py-3">No data</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -718,6 +776,15 @@
         <div style="position: relative; flex: 1; width: 100%;">
             <canvas id="modalChartCanvas"></canvas>
         </div>
+    </div>
+</div>
+
+<!-- Zoom Modal for Tables and Cards -->
+<div class="chart-modal-overlay" id="tableModal" onclick="closeTableModal(event)">
+    <div class="chart-modal-content" onclick="event.stopPropagation()">
+        <span class="chart-modal-close" onclick="closeTableModal(event)">&times;</span>
+        <h5 class="fw-bold text-dark m-0 border-bottom pb-2" id="modalTableTitle">Detailed View</h5>
+        <div id="tableModalBody"></div>
     </div>
 </div>
 
@@ -755,10 +822,10 @@
 
     const peso = v => '₱' + Number(v || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-    // Chart definitions for all 6 views
+    // Chart definitions for all 6 views matching Sales Report aesthetic
     const chartConfigs = {
         daily: {
-            title: '<i class="fa-solid fa-calendar-day text-info me-1"></i>Daily Sales Trend',
+            title: '<i class="fa-solid fa-calendar-day text-info me-2"></i>Daily Sales Trend',
             subtitle: 'Daily transaction revenue trajectory over the current timeframe.',
             badgeOne: 'Revenue',
             badgeTwo: 'Sales Trend',
@@ -770,14 +837,14 @@
                     data: dailySales,
                     borderColor: '#0284c7',
                     backgroundColor: 'rgba(2, 132, 199, 0.12)',
-                    borderWidth: 2.5,
+                    borderWidth: 3,
                     fill: true,
                     tension: 0.35,
-                    pointRadius: 3.5,
+                    pointRadius: 4,
                     pointBackgroundColor: '#ffffff',
                     pointBorderColor: '#0284c7',
-                    pointBorderWidth: 2,
-                    pointHoverRadius: 6
+                    pointBorderWidth: 2.5,
+                    pointHoverRadius: 7
                 }]
             },
             options: {
@@ -794,11 +861,11 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 9.5 } },
+                        ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 10.5 } },
                         grid: { color: '#f1f5f9' }
                     },
                     x: {
-                        ticks: { font: { size: 9.5 } },
+                        ticks: { font: { size: 10.5 } },
                         grid: { display: false }
                     }
                 }
@@ -806,7 +873,7 @@
         },
 
         weekly: {
-            title: '<i class="fa-solid fa-calendar-week text-danger me-1"></i>Weekly Sales Flow',
+            title: '<i class="fa-solid fa-calendar-week text-danger me-2"></i>Weekly Sales Flow',
             subtitle: 'Weekly comparative flow and growth analysis.',
             badgeOne: 'Weekly',
             badgeTwo: 'Bridge Flow',
@@ -819,7 +886,7 @@
                     backgroundColor: 'rgba(239, 68, 68, 0.75)',
                     borderColor: '#dc2626',
                     borderWidth: 1.5,
-                    borderRadius: 5
+                    borderRadius: 6
                 }]
             },
             options: {
@@ -836,11 +903,11 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 9.5 } },
+                        ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 10.5 } },
                         grid: { color: '#f1f5f9' }
                     },
                     x: {
-                        ticks: { font: { size: 9.5 } },
+                        ticks: { font: { size: 10.5 } },
                         grid: { display: false }
                     }
                 }
@@ -848,7 +915,7 @@
         },
 
         monthly: {
-            title: '<i class="fa-solid fa-chart-line text-primary me-1"></i>Monthly Sales Trend',
+            title: '<i class="fa-solid fa-chart-line text-primary me-2"></i>Monthly Sales Trend',
             subtitle: '12-Month revenue velocity and financial trajectory.',
             badgeOne: 'Monthly',
             badgeTwo: 'Revenue Growth',
@@ -860,14 +927,14 @@
                     data: monthSales,
                     borderColor: '#2563eb',
                     backgroundColor: 'rgba(37, 99, 235, 0.14)',
-                    borderWidth: 2.5,
+                    borderWidth: 3,
                     fill: true,
                     tension: 0.38,
-                    pointRadius: 3.5,
+                    pointRadius: 4,
                     pointBackgroundColor: '#ffffff',
                     pointBorderColor: '#2563eb',
-                    pointBorderWidth: 2,
-                    pointHoverRadius: 6
+                    pointBorderWidth: 2.5,
+                    pointHoverRadius: 7
                 }]
             },
             options: {
@@ -884,11 +951,11 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 9.5 } },
+                        ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 10.5 } },
                         grid: { color: '#f1f5f9' }
                     },
                     x: {
-                        ticks: { font: { size: 9.5 } },
+                        ticks: { font: { size: 10.5 } },
                         grid: { display: false }
                     }
                 }
@@ -896,7 +963,7 @@
         },
 
         product: {
-            title: '<i class="fa-solid fa-chart-column text-success me-1"></i>Sales per Product',
+            title: '<i class="fa-solid fa-chart-column text-success me-2"></i>Sales per Product',
             subtitle: 'Revenue generated across all individual product catalog items.',
             badgeOne: 'Products',
             badgeTwo: 'Catalog Sales',
@@ -909,7 +976,7 @@
                     backgroundColor: uniqueColors(products.length, 25, 0.85),
                     borderColor: uniqueColors(products.length, 25, 1),
                     borderWidth: 1.5,
-                    borderRadius: 5
+                    borderRadius: 6
                 }]
             },
             options: {
@@ -926,11 +993,11 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 9.5 } },
+                        ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 10.5 } },
                         grid: { color: '#f1f5f9' }
                     },
                     x: {
-                        ticks: { font: { size: 8.5 }, maxRotation: 40, minRotation: 0, autoSkip: true, maxTicksLimit: 14 },
+                        ticks: { font: { size: 9.5 }, maxRotation: 40, minRotation: 0, autoSkip: true, maxTicksLimit: 14 },
                         grid: { display: false }
                     }
                 }
@@ -938,7 +1005,7 @@
         },
 
         share: {
-            title: '<i class="fa-solid fa-chart-pie text-warning me-1"></i>Product Sales Share',
+            title: '<i class="fa-solid fa-chart-pie text-warning me-2"></i>Product Sales Share',
             subtitle: 'Percentage market share contribution of each beverage / item.',
             badgeOne: 'Percentage',
             badgeTwo: 'Share Distribution',
@@ -949,8 +1016,8 @@
                     data: sales,
                     backgroundColor: uniqueColors(products.length, 195, 0.90),
                     borderColor: '#ffffff',
-                    borderWidth: 2,
-                    hoverOffset: 6
+                    borderWidth: 2.5,
+                    hoverOffset: 8
                 }]
             },
             options: {
@@ -971,12 +1038,12 @@
                     legend: {
                         position: 'right',
                         labels: {
-                            boxWidth: 8,
-                            font: { size: 9, weight: '600' },
-                            padding: 6,
+                            boxWidth: 10,
+                            font: { size: 9.5, weight: '600' },
+                            padding: 8,
                             generateLabels: function (chart) {
                                 const data = chart.data;
-                                return data.labels.slice(0, 8).map((label, i) => ({
+                                return data.labels.slice(0, 10).map((label, i) => ({
                                     text: `${label} (${salesPercent[i] || 0}%)`,
                                     fillStyle: data.datasets[0].backgroundColor[i],
                                     strokeStyle: 'transparent',
@@ -990,7 +1057,7 @@
         },
 
         hours: {
-            title: '<i class="fa-solid fa-fire text-danger me-1"></i>Peak Sales Hours',
+            title: '<i class="fa-solid fa-fire text-danger me-2"></i>Peak Sales Hours',
             subtitle: 'Rush hour demand and hourly store activity patterns.',
             badgeOne: 'Hourly Flow',
             badgeTwo: 'Rush Hours',
@@ -1002,14 +1069,14 @@
                     data: hourSales,
                     borderColor: '#0284c7',
                     backgroundColor: 'rgba(2, 132, 199, 0.18)',
-                    borderWidth: 2.5,
+                    borderWidth: 3,
                     fill: true,
                     tension: 0.35,
-                    pointRadius: 3.5,
+                    pointRadius: 4,
                     pointBackgroundColor: '#ffffff',
                     pointBorderColor: '#0284c7',
-                    pointBorderWidth: 2,
-                    pointHoverRadius: 6
+                    pointBorderWidth: 2.5,
+                    pointHoverRadius: 7
                 }]
             },
             options: {
@@ -1026,11 +1093,11 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 9.5 } },
+                        ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 10.5 } },
                         grid: { color: '#f1f5f9' }
                     },
                     x: {
-                        ticks: { font: { size: 9.5 } },
+                        ticks: { font: { size: 10.5 } },
                         grid: { display: false }
                     }
                 }
@@ -1105,9 +1172,53 @@
         }
     };
 
+    // Table / Card Zoom Modal
+    window.openTableZoom = function (tableId, title) {
+        const table = document.getElementById(tableId);
+        if (!table) return;
+
+        const modal = document.getElementById('tableModal');
+        const modalTitle = document.getElementById('modalTableTitle');
+        const modalBody = document.getElementById('tableModalBody');
+
+        modalTitle.innerText = title || 'Detailed View';
+        modalBody.innerHTML = '';
+
+        const clone = table.cloneNode(true);
+        clone.classList.add('table', 'table-hover', 'align-middle');
+        clone.style.width = '100%';
+        modalBody.appendChild(clone);
+
+        modal.style.display = 'flex';
+    };
+
+    window.openCardZoom = function (contentId, title) {
+        const content = document.getElementById(contentId);
+        if (!content) return;
+
+        const modal = document.getElementById('tableModal');
+        const modalTitle = document.getElementById('modalTableTitle');
+        const modalBody = document.getElementById('tableModalBody');
+
+        modalTitle.innerText = title || 'Details View';
+        modalBody.innerHTML = '';
+
+        const clone = content.cloneNode(true);
+        clone.style.cursor = 'default';
+        modalBody.appendChild(clone);
+
+        modal.style.display = 'flex';
+    };
+
+    window.closeTableModal = function (e) {
+        if (e && e.target !== e.currentTarget && e.target.className !== 'chart-modal-close') return;
+        document.getElementById('tableModal').style.display = 'none';
+    };
+
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
             closeChartModal(e);
+            closeTableModal(e);
         }
     });
 
