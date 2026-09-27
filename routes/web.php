@@ -93,8 +93,11 @@ Route::middleware(['auth', 'single.session'])->group(function () {
         Route::post('/settings/gcash-qr', [SettingsController::class, 'uploadGcashQr'])->name('settings.gcash-qr');
     });
 
-    // Orders
+    // Orders — bulk actions MUST come before {order} wildcard routes
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/bulk-archive', [OrderController::class, 'bulkArchive'])->name('orders.bulk-archive')->middleware('app.admin');
+    Route::post('/orders/bulk-restore', [OrderController::class, 'bulkRestore'])->name('orders.bulk-restore')->middleware('app.admin');
+    Route::post('/orders/bulk-force-delete', [OrderController::class, 'bulkForceDelete'])->name('orders.bulk-force-delete')->middleware('app.admin');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{order}/void', [OrderController::class, 'void'])->name('orders.void');
     Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy')->middleware('app.admin');

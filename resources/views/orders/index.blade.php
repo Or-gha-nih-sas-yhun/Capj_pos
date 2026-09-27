@@ -128,6 +128,36 @@
 
     <!-- Orders Data Table Card -->
     <div class="card card-custom p-4">
+        @if(auth()->user()->isAdmin())
+        <!-- Bulk Actions Floating/Header Bar -->
+        <div id="bulkActionsToolbar" class="d-none alert alert-light border border-primary-subtle shadow-sm py-2 px-3 mb-3 rounded-3 align-items-center justify-content-between flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary rounded-pill px-2 py-1" id="selectedCountBadge">0</span>
+                <span class="fw-semibold text-dark small">orders selected</span>
+            </div>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                @if($tab !== 'archived')
+                    <button type="button" class="btn btn-sm btn-secondary d-flex align-items-center gap-1 shadow-sm" onclick="bulkArchiveSelected()">
+                        <i class="fa-solid fa-box-archive"></i>
+                        <span>Archive Selected (<span class="selectedCountNum">0</span>)</span>
+                    </button>
+                @else
+                    <button type="button" class="btn btn-sm btn-success text-white d-flex align-items-center gap-1 shadow-sm" onclick="bulkRestoreSelected()">
+                        <i class="fa-solid fa-box-open"></i>
+                        <span>Unarchive Selected (<span class="selectedCountNum">0</span>)</span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-danger d-flex align-items-center gap-1 shadow-sm" onclick="bulkForceDeleteSelected()">
+                        <i class="fa-solid fa-trash"></i>
+                        <span>Delete Selected (<span class="selectedCountNum">0</span>)</span>
+                    </button>
+                @endif
+                <button type="button" class="btn btn-sm btn-outline-secondary border-0" onclick="deselectAllOrders()">
+                    <i class="fa-solid fa-xmark me-1"></i> Deselect
+                </button>
+            </div>
+        </div>
+        @endif
+
         <div class="table-responsive" style="overflow-x: auto;">
             <table class="table table-hover align-middle mb-0" style="font-size: 0.9rem; min-width: 850px;">
                 <thead class="table-light">
@@ -139,12 +169,36 @@
                         <th>Status</th>
                         <th>Date & Time</th>
                         <th>Cashier / Staff</th>
-                        <th class="text-end">Actions</th>
+                        <th class="text-end" style="min-width: 270px;">
+                            <div class="d-inline-flex align-items-center justify-content-end gap-2 flex-wrap">
+                                <div id="headerBulkActions" class="d-none align-items-center gap-1 me-1">
+                                    @if($tab !== 'archived')
+                                    <button type="button" class="btn btn-xs btn-secondary py-1 px-2 fw-semibold" style="font-size: 0.75rem;" onclick="bulkArchiveSelected()" title="Archive selected orders">
+                                        <i class="fa-solid fa-box-archive me-1"></i> Archive (<span class="selectedCountNum">0</span>)
+                                    </button>
+                                    @else
+                                    <button type="button" class="btn btn-xs btn-success text-white py-1 px-2 fw-semibold" style="font-size: 0.75rem;" onclick="bulkRestoreSelected()" title="Unarchive selected orders">
+                                        <i class="fa-solid fa-box-open me-1"></i> Unarchive (<span class="selectedCountNum">0</span>)
+                                    </button>
+                                    <button type="button" class="btn btn-xs btn-danger text-white py-1 px-2 fw-semibold" style="font-size: 0.75rem;" onclick="bulkForceDeleteSelected()" title="Permanently delete selected orders">
+                                        <i class="fa-solid fa-trash me-1"></i> Delete (<span class="selectedCountNum">0</span>)
+                                    </button>
+                                    @endif
+                                </div>
+                                <span class="fw-bold">Actions</span>
+                                @if(auth()->user()->isAdmin())
+                                <div class="form-check m-0 d-inline-flex align-items-center gap-1 ps-2 border-start" title="Select All Orders on page">
+                                    <input type="checkbox" id="selectAllCheckbox" class="form-check-input m-0" style="cursor: pointer; width: 1.15rem; height: 1.15rem;">
+                                    <label for="selectAllCheckbox" class="form-check-label small fw-semibold text-secondary user-select-none mb-0" style="cursor: pointer; font-size: 0.8rem;">Select All</label>
+                                </div>
+                                @endif
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="orderTable">
                     @forelse($orders as $o)
-                    <tr>
+                    <tr id="order-row-{{ $o->id }}">
                         <td class="fw-bold text-secondary">#{{ $o->id }}</td>
                         <td class="fw-bold text-dark">{{ $o->customer_name ?: 'Walk-in' }}</td>
                         <td class="fw-bold text-primary fs-6">₱{{ number_format($o->total_amount, 2) }}</td>
@@ -173,54 +227,62 @@
                             <div class="text-muted" style="font-size: 0.75rem;">{{ ucfirst($o->user->role ?? 'Staff') }}</div>
                         </td>
                         <td class="text-end">
-                            <a href="{{ route('orders.show', $o->id) }}" class="btn btn-sm btn-light text-primary border me-1" title="View Receipt">
-                                <i class="fa-solid fa-eye me-1"></i> View
-                            </a>
+                            <div class="d-inline-flex align-items-center justify-content-end gap-1">
+                                <a href="{{ route('orders.show', $o->id) }}" class="btn btn-sm btn-light text-primary border" title="View Receipt">
+                                    <i class="fa-solid fa-eye me-1"></i> View
+                                </a>
 
-                            @if($tab !== 'archived')
-                                <!-- Void Button: Available for BOTH Admin & Staff -->
-                                @if($o->status === 'completed')
-                                <button type="button"
-                                    class="btn btn-sm btn-light text-warning border me-1"
-                                    title="Void Order"
-                                    onclick="confirmVoid({{ $o->id }}, '{{ route('orders.void', $o->id) }}')"
-                                >
-                                    <i class="fa-solid fa-rotate-left me-1"></i> Void
-                                </button>
+                                @if($tab !== 'archived')
+                                    <!-- Void Button: Available for BOTH Admin & Staff -->
+                                    @if($o->status === 'completed')
+                                    <button type="button"
+                                        class="btn btn-sm btn-light text-warning border"
+                                        title="Void Order"
+                                        onclick="confirmVoid({{ $o->id }}, '{{ route('orders.void', $o->id) }}')"
+                                    >
+                                        <i class="fa-solid fa-rotate-left me-1"></i> Void
+                                    </button>
+                                    @endif
+
+                                    <!-- Archive Button (Replaces Delete button): Admin Only -->
+                                    @if(auth()->user()->isAdmin())
+                                    <button type="button"
+                                        class="btn btn-sm btn-light text-secondary border"
+                                        title="Archive Order"
+                                        onclick="confirmArchive({{ $o->id }}, '{{ route('orders.destroy', $o->id) }}')"
+                                    >
+                                        <i class="fa-solid fa-box-archive me-1"></i> Archive
+                                    </button>
+                                    @endif
+                                @else
+                                    <!-- Archived Orders Tab Actions: Admin Only -->
+                                    @if(auth()->user()->isAdmin())
+                                    <!-- Unarchive Button -->
+                                    <button type="button"
+                                        class="btn btn-sm btn-light text-success border"
+                                        title="Unarchive Order"
+                                        onclick="confirmUnarchive({{ $o->id }}, '{{ route('orders.restore', $o->id) }}')"
+                                    >
+                                        <i class="fa-solid fa-box-open me-1"></i> Unarchive
+                                    </button>
+
+                                    <!-- Permanent Delete Button -->
+                                    <button type="button"
+                                        class="btn btn-sm btn-light text-danger border"
+                                        title="Permanently Delete Order"
+                                        onclick="confirmForceDelete({{ $o->id }}, '{{ route('orders.force-delete', $o->id) }}')"
+                                    >
+                                        <i class="fa-solid fa-trash me-1"></i> Delete
+                                    </button>
+                                    @endif
                                 @endif
 
-                                <!-- Archive Button (Replaces Delete button): Admin Only -->
                                 @if(auth()->user()->isAdmin())
-                                <button type="button"
-                                    class="btn btn-sm btn-light text-secondary border me-1"
-                                    title="Archive Order"
-                                    onclick="confirmArchive({{ $o->id }}, '{{ route('orders.destroy', $o->id) }}')"
-                                >
-                                    <i class="fa-solid fa-box-archive me-1"></i> Archive
-                                </button>
+                                <div class="ms-2 ps-2 border-start d-inline-flex align-items-center" title="Select Order #{{ $o->id }}">
+                                    <input type="checkbox" class="form-check-input order-select-box m-0" value="{{ $o->id }}" style="cursor: pointer; width: 1.15rem; height: 1.15rem;">
+                                </div>
                                 @endif
-                            @else
-                                <!-- Archived Orders Tab Actions: Admin Only -->
-                                @if(auth()->user()->isAdmin())
-                                <!-- Unarchive Button -->
-                                <button type="button"
-                                    class="btn btn-sm btn-light text-success border me-1"
-                                    title="Unarchive Order"
-                                    onclick="confirmUnarchive({{ $o->id }}, '{{ route('orders.restore', $o->id) }}')"
-                                >
-                                    <i class="fa-solid fa-box-open me-1"></i> Unarchive
-                                </button>
-
-                                <!-- Permanent Delete Button -->
-                                <button type="button"
-                                    class="btn btn-sm btn-light text-danger border"
-                                    title="Permanently Delete Order"
-                                    onclick="confirmForceDelete({{ $o->id }}, '{{ route('orders.force-delete', $o->id) }}')"
-                                >
-                                    <i class="fa-solid fa-trash me-1"></i> Delete
-                                </button>
-                                @endif
-                            @endif
+                            </div>
                         </td>
                     </tr>
                     @empty
@@ -351,5 +413,199 @@
             }
         });
     }
+
+    // ==========================================
+    // Bulk / Batch Selection & Actions
+    // ==========================================
+    function getSelectedOrderIds() {
+        const checked = document.querySelectorAll('.order-select-box:checked');
+        return Array.from(checked).map(cb => cb.value);
+    }
+
+    function updateBulkUI() {
+        const selected = getSelectedOrderIds();
+        const count = selected.length;
+        const visibleCheckboxes = Array.from(document.querySelectorAll('.order-select-box')).filter(cb => {
+            const tr = cb.closest('tr');
+            return tr && tr.style.display !== 'none';
+        });
+        const visibleCount = visibleCheckboxes.length;
+        const visibleCheckedCount = visibleCheckboxes.filter(cb => cb.checked).length;
+
+        const selectAllCb = document.getElementById('selectAllCheckbox');
+        const toolbar = document.getElementById('bulkActionsToolbar');
+        const headerActions = document.getElementById('headerBulkActions');
+
+        if (selectAllCb) {
+            selectAllCb.checked = visibleCount > 0 && visibleCheckedCount === visibleCount;
+            selectAllCb.indeterminate = visibleCheckedCount > 0 && visibleCheckedCount < visibleCount;
+        }
+
+        // Update badge and count labels
+        document.querySelectorAll('.selectedCountNum').forEach(el => el.textContent = count);
+        const countBadge = document.getElementById('selectedCountBadge');
+        if (countBadge) countBadge.textContent = count;
+
+        // Toggle row highlight
+        document.querySelectorAll('.order-select-box').forEach(cb => {
+            const tr = cb.closest('tr');
+            if (tr) {
+                if (cb.checked) {
+                    tr.classList.add('table-primary');
+                } else {
+                    tr.classList.remove('table-primary');
+                }
+            }
+        });
+
+        // Show / hide bulk toolbars
+        if (count > 0) {
+            if (toolbar) {
+                toolbar.classList.remove('d-none');
+                toolbar.classList.add('d-flex');
+            }
+            if (headerActions) {
+                headerActions.classList.remove('d-none');
+                headerActions.classList.add('d-inline-flex');
+            }
+        } else {
+            if (toolbar) {
+                toolbar.classList.add('d-none');
+                toolbar.classList.remove('d-flex');
+            }
+            if (headerActions) {
+                headerActions.classList.add('d-none');
+                headerActions.classList.remove('d-inline-flex');
+            }
+        }
+    }
+
+    function deselectAllOrders() {
+        document.querySelectorAll('.order-select-box').forEach(cb => {
+            cb.checked = false;
+        });
+        const selectAllCb = document.getElementById('selectAllCheckbox');
+        if (selectAllCb) {
+            selectAllCb.checked = false;
+            selectAllCb.indeterminate = false;
+        }
+        updateBulkUI();
+    }
+
+    function postBulkForm(url, ids) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = url;
+
+        const csrf = document.createElement('input');
+        csrf.type = 'hidden';
+        csrf.name = '_token';
+        csrf.value = '{{ csrf_token() }}';
+        form.appendChild(csrf);
+
+        ids.forEach(id => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'order_ids[]';
+            input.value = id;
+            form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function bulkArchiveSelected() {
+        const ids = getSelectedOrderIds();
+        if (ids.length === 0) {
+            Swal.fire({ icon: 'info', title: 'No Orders Selected', text: 'Please select at least one order to archive.' });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Archive ' + ids.length + ' Order' + (ids.length > 1 ? 's' : '') + '?',
+            html: 'Are you sure you want to move <strong>' + ids.length + ' order' + (ids.length > 1 ? 's' : '') + '</strong> to the Archived Orders list?<br><br><span class="text-muted small">Orders: #' + ids.join(', #') + '</span>',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#64748b',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="fa-solid fa-box-archive me-1"></i> Yes, Archive (' + ids.length + ')',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                postBulkForm('{{ route("orders.bulk-archive") }}', ids);
+            }
+        });
+    }
+
+    function bulkRestoreSelected() {
+        const ids = getSelectedOrderIds();
+        if (ids.length === 0) {
+            Swal.fire({ icon: 'info', title: 'No Orders Selected', text: 'Please select at least one order to unarchive.' });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Unarchive ' + ids.length + ' Order' + (ids.length > 1 ? 's' : '') + '?',
+            html: 'Are you sure you want to restore <strong>' + ids.length + ' order' + (ids.length > 1 ? 's' : '') + '</strong> back to the Active Orders list?<br><br><span class="text-muted small">Orders: #' + ids.join(', #') + '</span>',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#10b981',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="fa-solid fa-box-open me-1"></i> Yes, Unarchive (' + ids.length + ')',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                postBulkForm('{{ route("orders.bulk-restore") }}', ids);
+            }
+        });
+    }
+
+    function bulkForceDeleteSelected() {
+        const ids = getSelectedOrderIds();
+        if (ids.length === 0) {
+            Swal.fire({ icon: 'info', title: 'No Orders Selected', text: 'Please select at least one order to delete.' });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Permanently Delete ' + ids.length + ' Order' + (ids.length > 1 ? 's' : '') + '?',
+            html: '<strong class="text-danger">Warning:</strong> This action is permanent and cannot be undone!<br><br>Are you sure you want to permanently delete <strong>' + ids.length + ' order' + (ids.length > 1 ? 's' : '') + '</strong> from the database?<br><br><span class="text-muted small">Orders: #' + ids.join(', #') + '</span>',
+            icon: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="fa-solid fa-trash me-1"></i> Yes, Delete Permanently (' + ids.length + ')',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                postBulkForm('{{ route("orders.bulk-force-delete") }}', ids);
+            }
+        });
+    }
+
+    // Attach event listeners on load
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectAllCb = document.getElementById('selectAllCheckbox');
+        if (selectAllCb) {
+            selectAllCb.addEventListener('change', function() {
+                const checked = this.checked;
+                document.querySelectorAll('#orderTable tr').forEach(row => {
+                    if (row.style.display !== 'none') {
+                        const cb = row.querySelector('.order-select-box');
+                        if (cb) cb.checked = checked;
+                    }
+                });
+                updateBulkUI();
+            });
+        }
+
+        document.querySelectorAll('.order-select-box').forEach(cb => {
+            cb.addEventListener('change', updateBulkUI);
+        });
+    });
 </script>
 @endpush

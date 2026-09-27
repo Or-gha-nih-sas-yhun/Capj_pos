@@ -117,6 +117,118 @@ class OrderController extends Controller
     }
 
     /**
+     * Bulk archive active orders.
+     */
+    public function bulkArchive(Request $request)
+    {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('orders.index')->with('error', 'Access denied. Only administrators can archive orders.');
+        }
+
+        $ids = $request->input('order_ids', []);
+        if (empty($ids) || !is_array($ids)) {
+            return redirect()->route('orders.index')->with('error', 'No orders were selected for archiving.');
+        }
+
+        $this->ensureSoftDeletesColumn();
+
+        $orders = Order::whereIn('id', $ids)->get();
+        $count = 0;
+        $archivedIds = [];
+        foreach ($orders as $order) {
+            $archivedIds[] = $order->id;
+            $order->delete();
+            $count++;
+        }
+
+        if ($count > 0) {
+            ActivityLog::create([
+                'user_id'     => auth()->id(),
+                'action'      => 'ORDER_BULK_ARCHIVED',
+                'description' => "Archived {$count} orders: #" . implode(', #', $archivedIds),
+            ]);
+            return redirect()->route('orders.index')->with('success', "Successfully archived {$count} order(s).");
+        }
+
+        return redirect()->route('orders.index')->with('error', 'No matching active orders found to archive.');
+    }
+
+    /**
+     * Bulk restore archived orders.
+     */
+    public function bulkRestore(Request $request)
+    {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('orders.index')->with('error', 'Access denied. Only administrators can unarchive orders.');
+        }
+
+        $ids = $request->input('order_ids', []);
+        if (empty($ids) || !is_array($ids)) {
+            return redirect()->route('orders.index', ['tab' => 'archived'])->with('error', 'No orders were selected for unarchiving.');
+        }
+
+        $this->ensureSoftDeletesColumn();
+
+        $orders = Order::onlyTrashed()->whereIn('id', $ids)->get();
+        $count = 0;
+        $restoredIds = [];
+        foreach ($orders as $order) {
+            $restoredIds[] = $order->id;
+            $order->restore();
+            $count++;
+        }
+
+        if ($count > 0) {
+            ActivityLog::create([
+                'user_id'     => auth()->id(),
+                'action'      => 'ORDER_BULK_UNARCHIVED',
+                'description' => "Unarchived {$count} orders: #" . implode(', #', $restoredIds),
+            ]);
+            return redirect()->route('orders.index', ['tab' => 'archived'])->with('success', "Successfully restored {$count} order(s) from archive.");
+        }
+
+        return redirect()->route('orders.index', ['tab' => 'archived'])->with('error', 'No matching archived orders found to unarchive.');
+    }
+
+    /**
+     * Bulk permanently delete archived orders.
+     */
+    public function bulkForceDelete(Request $request)
+    {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('orders.index')->with('error', 'Access denied. Only administrators can permanently delete orders.');
+        }
+
+        $ids = $request->input('order_ids', []);
+        if (empty($ids) || !is_array($ids)) {
+            return redirect()->route('orders.index', ['tab' => 'archived'])->with('error', 'No orders were selected for permanent deletion.');
+        }
+
+        $this->ensureSoftDeletesColumn();
+
+        $orders = Order::onlyTrashed()->whereIn('id', $ids)->get();
+        $count = 0;
+        $deletedIds = [];
+        foreach ($orders as $order) {
+            $deletedIds[] = $order->id;
+            $order->items()->delete();
+            $order->forceDelete();
+            $count++;
+        }
+
+        if ($count > 0) {
+            ActivityLog::create([
+                'user_id'     => auth()->id(),
+                'action'      => 'ORDER_BULK_PERMANENTLY_DELETED',
+                'description' => "Permanently deleted {$count} orders from archive: #" . implode(', #', $deletedIds),
+            ]);
+            return redirect()->route('orders.index', ['tab' => 'archived'])->with('success', "Permanently deleted {$count} order(s).");
+        }
+
+        return redirect()->route('orders.index', ['tab' => 'archived'])->with('error', 'No matching archived orders found to delete.');
+    }
+
+    /**
      * Void a completed order (accessible by Admin and Staff).
      * Restores inventory stock and marks the order as 'voided' (or 'cancelled' if restricted).
      */
