@@ -221,6 +221,19 @@ class DashboardController extends Controller
         $best_product_name = $bestProductGrp->keys()->first() ?? 'N/A';
         $best_product_count = $bestProductGrp->first() ?? 0;
 
+        $bestProductSales = collect($orderItems)->groupBy('product')->map(function($g, $name) {
+            return [
+                'name' => $name,
+                'qty_sold' => (int)$g->sum('qty'),
+                'revenue' => (float)$g->sum('line_total')
+            ];
+        })->sortByDesc('qty_sold')->first();
+        $best_product_revenue = $bestProductSales['revenue'] ?? 0;
+        $best_product_qty = $bestProductSales['qty_sold'] ?? $best_product_count;
+        $best_product_share = $total_sales_sum > 0 && isset($bestProductSales['revenue']) 
+            ? round(($bestProductSales['revenue'] / $total_sales_sum) * 100, 1) 
+            : 0;
+
         $sales_growth = $monthly_revenue_prev > 0 ? round((($monthly_revenue - $monthly_revenue_prev) / $monthly_revenue_prev) * 100, 1) : 0;
 
         // Panels
@@ -261,6 +274,15 @@ class DashboardController extends Controller
             })->sortByDesc('total')->values();
         $total_all_sales = $allOrders->sum('total_amount') ?: 1;
 
+        // Payment Summary
+        $payment_summary = $allOrders->groupBy('payment_method')->map(function($g, $method) {
+            return [
+                'method' => ucfirst($method ?: 'cash'),
+                'orders_count' => $g->count(),
+                'revenue' => (float)$g->sum('total_amount')
+            ];
+        })->sortByDesc('revenue')->values();
+
         // Footer
         $footer_date_start = $allOrders->min('created_at') ? Carbon::parse($allOrders->min('created_at'))->format('M j, Y') : 'N/A';
         $footer_date_end = $allOrders->max('created_at') ? Carbon::parse($allOrders->max('created_at'))->format('M j, Y') : 'N/A';
@@ -287,9 +309,11 @@ class DashboardController extends Controller
             'orders_this_month', 'orders_last_month',
             'total_products', 'total_products_prev',
             'best_product_name', 'best_product_count',
+            'best_product_qty', 'best_product_revenue', 'best_product_share',
             'sales_growth',
             'top5_products', 'least5_products',
             'growth_rows', 'peakday_rows', 'daily_rows', 'total_all_sales',
+            'payment_summary',
             'footer_date_start', 'footer_date_end', 'footer_customers',
             'payment_breakdown', 'footer_last_updated'
         ));

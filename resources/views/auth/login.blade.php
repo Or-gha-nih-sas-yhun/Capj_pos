@@ -117,10 +117,63 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        .btn-back-home {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 1050;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.15rem;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #1e293b;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-back-home:hover {
+            background: #ffffff;
+            color: #f10000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(241, 0, 0, 0.25);
+        }
+
+        .btn-back-home i {
+            font-size: 0.85rem;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-back-home:hover i {
+            transform: translateX(-3px);
+        }
+
+        @media (max-width: 576px) {
+            .btn-back-home {
+                top: 0.75rem;
+                right: 0.75rem;
+                padding: 0.4rem 0.85rem;
+                font-size: 0.78rem;
+            }
+        }
     </style>
 </head>
 
 <body>
+
+    <!-- Back to Home Button (Top Right) -->
+    <a href="{{ route('landing') }}" class="btn-back-home" id="backToHomeBtn" title="Back to Home">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
 
     <div class="login-card">
         <div class="login-header d-flex flex-column align-items-center justify-content-center">
