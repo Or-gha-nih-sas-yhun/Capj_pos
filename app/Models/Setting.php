@@ -41,6 +41,7 @@ class Setting extends Model
             // Payments
             'gcash_number' => config('pos.gcash.number', '09536774000'),
             'gcash_name' => 'CAPTAiN J',
+            'gcash_qr_image' => config('pos.gcash.qr_image', 'images/gcash-qr.jpg'),
 
             // Inventory
             'low_stock_threshold' => (string) config('pos.low_stock_threshold', 5),

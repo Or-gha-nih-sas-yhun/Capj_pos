@@ -63,6 +63,11 @@
         </div>
     @endif
 
+    {{-- Kept outside the settings form because nested forms do not submit reliably. --}}
+    <form action="{{ route('settings.gcash-qr') }}" method="POST" enctype="multipart/form-data" id="gcashQrForm">
+        @csrf
+    </form>
+
     <form action="{{ route('settings.update') }}" method="POST">
         @csrf
 
@@ -171,7 +176,7 @@
                         <div class="col-12 col-sm-auto text-center">
                             <p class="small fw-semibold text-secondary mb-2">Current QR Code</p>
                             <img id="gcashQrPreview"
-                                 src="{{ asset('images/gcash-qr.jpg') }}?v={{ time() }}"
+                                 src="{{ asset($gcashQrImage) }}{{ $gcashQrVersion ? '?v='.$gcashQrVersion : '' }}"
                                  alt="GCash QR Code"
                                  class="rounded border shadow-sm"
                                  style="width:160px; height:160px; object-fit:contain; background:#f8f9fa;"
@@ -180,27 +185,25 @@
 
                         {{-- Upload form --}}
                         <div class="col">
-                            <form action="{{ route('settings.gcash-qr') }}" method="POST" enctype="multipart/form-data" id="gcashQrForm">
-                                @csrf
-                                <label class="form-label small fw-semibold text-secondary">Upload New QR Code</label>
+                            <label class="form-label small fw-semibold text-secondary">Upload New QR Code</label>
 
-                                <div class="input-group mb-2">
-                                    <input type="file" name="gcash_qr" id="gcashQrInput"
-                                           class="form-control @error('gcash_qr') is-invalid @enderror"
-                                           accept="image/*"
-                                           onchange="previewGcashQr(this)">
-                                    <button type="submit" class="btn btn-primary fw-semibold px-3">
-                                        <i class="fa-solid fa-upload me-1"></i> Upload
-                                    </button>
-                                    @error('gcash_qr')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                            <div class="input-group mb-2">
+                                <input type="file" name="gcash_qr" id="gcashQrInput"
+                                       form="gcashQrForm"
+                                       class="form-control @error('gcash_qr') is-invalid @enderror"
+                                       accept="image/jpeg,image/png,image/gif,image/webp"
+                                       onchange="previewGcashQr(this)" required>
+                                <button type="submit" form="gcashQrForm" class="btn btn-primary fw-semibold px-3">
+                                    <i class="fa-solid fa-upload me-1"></i> Upload
+                                </button>
+                                @error('gcash_qr')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                                <div class="setting-hint">
-                                    Accepted: JPG, PNG, WebP &mdash; max 2 MB. The image will replace the current QR code immediately.
-                                </div>
-                            </form>
+                            <div class="setting-hint">
+                                Accepted: JPG, PNG, GIF, WebP &mdash; max 2 MB. The image will replace the current QR code immediately.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -307,12 +310,6 @@
                         </div>
                     </form>
 
-                    <div class="setting-hint mt-3">
-                        <strong>Tip:</strong> Gmail rejects normal account passwords over SMTP. Use a 16-character
-                        App Password from
-                        <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener">myaccount.google.com/apppasswords</a>
-                        (requires 2-Step Verification), and run <code>php artisan config:clear</code> after editing <code>.env</code>.
-                    </div>
                 </div>
             </div>
         </div>

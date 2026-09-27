@@ -20,8 +20,9 @@ class PaymentController extends Controller
     public function gcashCheckout(Order $order)
     {
         $gcashNumber = \App\Models\Setting::get('gcash_number', config('pos.gcash.number', '09536774000'));
-        $qrImage = config('pos.gcash.qr_image', 'images/gcash-qr.jpg');
-        return view('payments.gcash', compact('order', 'gcashNumber', 'qrImage'));
+        $qrImage = \App\Models\Setting::get('gcash_qr_image', config('pos.gcash.qr_image', 'images/gcash-qr.jpg'));
+        $qrVersion = file_exists(public_path($qrImage)) ? filemtime(public_path($qrImage)) : null;
+        return view('payments.gcash', compact('order', 'gcashNumber', 'qrImage', 'qrVersion'));
     }
 
     public function paymongoCheckout(Order $order)

@@ -9,7 +9,7 @@
         <p class="text-secondary small mb-3">Order #{{ $order->id }} — Total Amount: <strong class="text-primary fs-5">₱{{ number_format($order->total_amount, 2) }}</strong></p>
 
         <div class="p-3 bg-light rounded border mb-3">
-            <img src="{{ asset($qrImage) }}" alt="GCash QR Code" class="img-fluid rounded" style="max-height: 280px;" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=GCash+Payment+Order+{{ $order->id }}';">
+            <img src="{{ asset($qrImage) }}{{ $qrVersion ? '?v='.$qrVersion : '' }}" alt="GCash QR Code" class="img-fluid rounded" style="max-height: 280px;" onerror="this.onerror=null; this.src='{{ asset('images/capj.jpg') }}';">
             <div class="fw-bold mt-2">GCash Number: <span class="text-primary">{{ $gcashNumber }}</span></div>
         </div>
 

@@ -44,10 +44,15 @@ class PosController extends Controller
         $takeoutFeePerItems = max(1, Setting::getInt('takeout_fee_per_items', 2));
         $gcashNumber = Setting::get('gcash_number', config('pos.gcash.number'));
         $gcashName = Setting::get('gcash_name', '');
+        $gcashQrImage = Setting::get('gcash_qr_image', config('pos.gcash.qr_image', 'images/gcash-qr.jpg'));
+        $gcashQrVersion = file_exists(public_path($gcashQrImage))
+            ? filemtime(public_path($gcashQrImage))
+            : null;
 
         return view('pos.index', compact(
             'items', 'categories',
-            'takeoutFeeAmount', 'takeoutFeePerItems', 'gcashNumber', 'gcashName'
+            'takeoutFeeAmount', 'takeoutFeePerItems', 'gcashNumber', 'gcashName',
+            'gcashQrImage', 'gcashQrVersion'
         ));
     }
 

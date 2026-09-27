@@ -255,7 +255,7 @@
                 
                 <div class="gcash-qr-box mb-3">
                     <p class="small fw-semibold text-primary mb-2">Scan QR Code using GCash App</p>
-                    <img src="{{ asset('images/gcash-qr.jpg') }}" alt="GCash QR Code" class="img-fluid mb-2" onerror="this.src='{{ asset('images/capj.jpg') }}'">
+                    <img src="{{ asset($gcashQrImage) }}{{ $gcashQrVersion ? '?v='.$gcashQrVersion : '' }}" alt="GCash QR Code" class="img-fluid mb-2" onerror="this.onerror=null; this.src='{{ asset('images/capj.jpg') }}'">
                     <p class="mb-0 fw-bold fs-5 text-dark">GCash #: <span class="text-primary">{{ $gcashNumber }}</span></p>
                     @if(!empty($gcashName))
                         <p class="mb-0 small text-muted">{{ $gcashName }}</p>

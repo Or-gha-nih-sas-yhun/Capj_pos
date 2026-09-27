@@ -139,7 +139,11 @@
                     <div class="relative mx-auto max-w-lg lg:max-w-none">
                         <!-- Glass background highlight -->
                         <div class="absolute -inset-4 bg-gradient-to-r from-red-500/10 to-orange-500/10 rounded-3xl blur-2xl -z-10"></div>
-                        <img src="{{ asset('images/pos_hero_mockup.jpg') }}" alt="CAPTAiN J POS Dashboard & Mobile Interface" class="w-full h-auto rounded-2xl shadow-2xl border border-slate-200/80">
+                        <img src="{{ asset('images/pos_hero_mockup.png') }}"
+                             alt="CAPTAiN J POS dashboard shown on laptop and mobile devices"
+                             width="1680" height="937"
+                             fetchpriority="high"
+                             class="w-full h-auto rounded-2xl shadow-2xl border border-slate-200/80">
                     </div>
                 </div>
 

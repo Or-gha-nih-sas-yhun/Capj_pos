@@ -6,18 +6,23 @@ use App\Models\ActivityLog;
 use App\Models\Setting;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class SettingsController extends Controller
 {
     public function index()
     {
         $settings = Setting::values();
+        $gcashQrImage = $settings['gcash_qr_image'];
+        $gcashQrVersion = File::exists(public_path($gcashQrImage))
+            ? File::lastModified(public_path($gcashQrImage))
+            : null;
 
         $mail = [
             'from' => config('mail.from.address'),
         ];
 
-        return view('settings.index', compact('settings', 'mail'));
+        return view('settings.index', compact('settings', 'mail', 'gcashQrImage', 'gcashQrVersion'));
     }
 
     public function update(Request $request)
@@ -81,8 +86,22 @@ class SettingsController extends Controller
             mkdir($destination, 0755, true);
         }
 
-        // Always save as gcash-qr.jpg so all references keep working
-        $file->move($destination, 'gcash-qr.jpg');
+        // Keep the extension consistent with the uploaded image's actual MIME type.
+        // Renaming a PNG/WebP payload to .jpg can make browsers reject the QR image.
+        $extension = strtolower($file->extension());
+        $filename = "gcash-qr.{$extension}";
+        $relativePath = "images/{$filename}";
+
+        $file->move($destination, $filename);
+        Setting::put(['gcash_qr_image' => $relativePath]);
+
+        // Remove obsolete QR variants only after the new upload has been saved.
+        foreach (['jpg', 'jpeg', 'png', 'gif', 'webp'] as $oldExtension) {
+            $oldPath = $destination . DIRECTORY_SEPARATOR . "gcash-qr.{$oldExtension}";
+            if ($oldExtension !== $extension && File::exists($oldPath)) {
+                File::delete($oldPath);
+            }
+        }
 
         ActivityLog::create([
             'user_id'     => auth()->id(),
