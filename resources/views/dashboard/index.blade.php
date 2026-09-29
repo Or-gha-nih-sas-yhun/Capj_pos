@@ -561,8 +561,8 @@
                         </div>
                         <div class="d-flex align-items-center gap-2">
                             <div id="chartBadgesContainer">
-                                <span class="badge bg-danger-subtle text-danger" id="badgeOne">Revenue</span>
-                                <span class="badge bg-primary-subtle text-primary" id="badgeTwo">Sales (₱)</span>
+                                <span class="badge bg-primary-subtle text-primary" id="badgeOne">Revenue</span>
+                                <span class="badge bg-warning-subtle text-warning-emphasis" id="badgeTwo">Items Sold</span>
                             </div>
                             <span class="badge bg-light text-muted border py-1 px-2" title="Zoom Chart">
                                 <i class="fa-solid fa-magnifying-glass-plus"></i>
@@ -878,15 +878,20 @@
         // All original datasets preserved 100%
         const products = {!! json_encode($products) !!};
         const sales = {!! json_encode($sales) !!};
+        const productItemsSold = {!! json_encode($product_items_sold) !!};
         const salesPercent = {!! json_encode($sales_percent) !!};
         const months = {!! json_encode($months) !!};
         const monthSales = {!! json_encode($month_sales) !!};
+        const monthItemsSold = {!! json_encode($month_items_sold) !!};
         const dailyLabels = {!! json_encode($daily_labels) !!};
         const dailySales = {!! json_encode($daily_sales) !!};
+        const dailyItemsSold = {!! json_encode($daily_items_sold) !!};
         const weeklyLabels = {!! json_encode($weekly_labels) !!};
         const weeklySales = {!! json_encode($weekly_sales) !!};
+        const weeklyItemsSold = {!! json_encode($weekly_items_sold) !!};
         const hourLabels = {!! json_encode($hour_labels) !!};
         const hourSales = {!! json_encode($hour_sales) !!};
+        const hourItemsSold = {!! json_encode($hour_items_sold) !!};
 
         function uniqueColors(count, offset = 0, alpha = 1) {
             const colors = [];
@@ -904,19 +909,64 @@
 
         const peso = v => '₱' + Number(v || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+        function dualAxisOptions(xTicks = { font: { size: 10.5 } }) {
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: { usePointStyle: true, boxWidth: 8, font: { size: 10.5, weight: '600' } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => ctx.dataset.yAxisID === 'y1'
+                                ? ` ${ctx.dataset.label}: ${Number(ctx.raw || 0).toLocaleString()} items`
+                                : ` ${ctx.dataset.label}: ${peso(ctx.raw)}`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        position: 'left',
+                        beginAtZero: true,
+                        title: { display: true, text: 'Revenue (₱)', color: '#0284c7', font: { size: 11, weight: '600' } },
+                        ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 10.5 } },
+                        grid: { color: '#f1f5f9' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        position: 'right',
+                        beginAtZero: true,
+                        title: { display: true, text: 'Items Sold', color: '#f97316', font: { size: 11, weight: '600' } },
+                        ticks: { precision: 0, font: { size: 10.5 } },
+                        grid: { drawOnChartArea: false }
+                    },
+                    x: {
+                        ticks: xTicks,
+                        grid: { display: false }
+                    }
+                }
+            };
+        }
+
         // Chart definitions for all 6 views matching Sales Report aesthetic
         const chartConfigs = {
             daily: {
                 title: '<i class="fa-solid fa-calendar-day text-info me-2"></i>Daily Sales Trend',
-                subtitle: 'Daily transaction revenue trajectory over the current timeframe.',
+                subtitle: 'Daily revenue and item sales over the current timeframe.',
                 badgeOne: 'Revenue',
-                badgeTwo: 'Sales Trend',
+                badgeTwo: 'Items Sold',
                 type: 'line',
                 data: {
                     labels: dailyLabels,
                     datasets: [{
-                        label: 'Sales (₱)',
+                        label: 'Revenue',
                         data: dailySales,
+                        yAxisID: 'y',
                         borderColor: '#0284c7',
                         backgroundColor: 'rgba(2, 132, 199, 0.12)',
                         borderWidth: 3,
@@ -927,86 +977,67 @@
                         pointBorderColor: '#0284c7',
                         pointBorderWidth: 2.5,
                         pointHoverRadius: 7
+                    }, {
+                        label: 'Items Sold',
+                        data: dailyItemsSold,
+                        yAxisID: 'y1',
+                        borderColor: '#f97316',
+                        backgroundColor: '#f97316',
+                        borderWidth: 2.5,
+                        fill: false,
+                        tension: 0.35,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => ` Sales: ${peso(ctx.raw)}`
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 10.5 } },
-                            grid: { color: '#f1f5f9' }
-                        },
-                        x: {
-                            ticks: { font: { size: 10.5 } },
-                            grid: { display: false }
-                        }
-                    }
-                }
+                options: dualAxisOptions()
             },
 
             weekly: {
                 title: '<i class="fa-solid fa-calendar-week text-danger me-2"></i>Weekly Sales Flow',
-                subtitle: 'Weekly comparative flow and growth analysis.',
-                badgeOne: 'Weekly',
-                badgeTwo: 'Bridge Flow',
+                subtitle: 'Weekly revenue and item sales comparison.',
+                badgeOne: 'Revenue',
+                badgeTwo: 'Items Sold',
                 type: 'bar',
                 data: {
                     labels: weeklyLabels,
                     datasets: [{
-                        label: 'Weekly Sales',
+                        label: 'Revenue',
                         data: weeklySales,
+                        yAxisID: 'y',
                         backgroundColor: 'rgba(239, 68, 68, 0.75)',
                         borderColor: '#dc2626',
                         borderWidth: 1.5,
                         borderRadius: 6
+                    }, {
+                        type: 'line',
+                        label: 'Items Sold',
+                        data: weeklyItemsSold,
+                        yAxisID: 'y1',
+                        borderColor: '#f97316',
+                        backgroundColor: '#f97316',
+                        borderWidth: 2.5,
+                        fill: false,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointHoverRadius: 7
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => ` Sales: ${peso(ctx.raw)}`
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 10.5 } },
-                            grid: { color: '#f1f5f9' }
-                        },
-                        x: {
-                            ticks: { font: { size: 10.5 } },
-                            grid: { display: false }
-                        }
-                    }
-                }
+                options: dualAxisOptions()
             },
 
             monthly: {
                 title: '<i class="fa-solid fa-chart-line text-primary me-2"></i>Monthly Sales Trend',
-                subtitle: '12-Month revenue velocity and financial trajectory.',
-                badgeOne: 'Monthly',
-                badgeTwo: 'Revenue Growth',
+                subtitle: '12-month revenue and item sales trajectory.',
+                badgeOne: 'Revenue',
+                badgeTwo: 'Items Sold',
                 type: 'line',
                 data: {
                     labels: months,
                     datasets: [{
-                        label: 'Sales (₱)',
+                        label: 'Revenue',
                         data: monthSales,
+                        yAxisID: 'y',
                         borderColor: '#2563eb',
                         backgroundColor: 'rgba(37, 99, 235, 0.14)',
                         borderWidth: 3,
@@ -1017,80 +1048,60 @@
                         pointBorderColor: '#2563eb',
                         pointBorderWidth: 2.5,
                         pointHoverRadius: 7
+                    }, {
+                        label: 'Items Sold',
+                        data: monthItemsSold,
+                        yAxisID: 'y1',
+                        borderColor: '#f97316',
+                        backgroundColor: '#f97316',
+                        borderWidth: 2.5,
+                        fill: false,
+                        tension: 0.38,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => ` Revenue: ${peso(ctx.raw)}`
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 10.5 } },
-                            grid: { color: '#f1f5f9' }
-                        },
-                        x: {
-                            ticks: { font: { size: 10.5 } },
-                            grid: { display: false }
-                        }
-                    }
-                }
+                options: dualAxisOptions()
             },
 
             product: {
                 title: '<i class="fa-solid fa-chart-column text-success me-2"></i>Sales per Product',
-                subtitle: 'Revenue generated across all individual product catalog items.',
-                badgeOne: 'Products',
-                badgeTwo: 'Catalog Sales',
+                subtitle: 'Revenue and quantity sold across all catalog items.',
+                badgeOne: 'Revenue',
+                badgeTwo: 'Items Sold',
                 type: 'bar',
                 data: {
                     labels: products,
                     datasets: [{
-                        label: 'Sales (₱)',
+                        label: 'Revenue',
                         data: sales,
+                        yAxisID: 'y',
                         backgroundColor: uniqueColors(products.length, 25, 0.85),
                         borderColor: uniqueColors(products.length, 25, 1),
                         borderWidth: 1.5,
                         borderRadius: 6
+                    }, {
+                        type: 'line',
+                        label: 'Items Sold',
+                        data: productItemsSold,
+                        yAxisID: 'y1',
+                        borderColor: '#f97316',
+                        backgroundColor: '#f97316',
+                        borderWidth: 2.5,
+                        fill: false,
+                        tension: 0.25,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => ` Sales: ${peso(ctx.raw)}`
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 10.5 } },
-                            grid: { color: '#f1f5f9' }
-                        },
-                        x: {
-                            ticks: { font: { size: 9.5 }, maxRotation: 40, minRotation: 0, autoSkip: true, maxTicksLimit: 14 },
-                            grid: { display: false }
-                        }
-                    }
-                }
+                options: dualAxisOptions({ font: { size: 9.5 }, maxRotation: 40, minRotation: 0, autoSkip: false })
             },
 
             share: {
                 title: '<i class="fa-solid fa-chart-pie text-warning me-2"></i>Product Sales Share',
                 subtitle: 'Percentage market share contribution of each beverage / item.',
-                badgeOne: 'Percentage',
-                badgeTwo: 'Share Distribution',
+                badgeOne: 'Revenue Share',
+                badgeTwo: null,
                 type: 'doughnut',
                 data: {
                     labels: products,
@@ -1125,10 +1136,11 @@
                                 padding: 8,
                                 generateLabels: function (chart) {
                                     const data = chart.data;
-                                    return data.labels.slice(0, 10).map((label, i) => ({
+                                    return data.labels.map((label, i) => ({
                                         text: `${label} (${salesPercent[i] || 0}%)`,
                                         fillStyle: data.datasets[0].backgroundColor[i],
-                                        strokeStyle: 'transparent',
+                                        strokeStyle: '#ffffff',
+                                        hidden: !chart.getDataVisibility(i),
                                         index: i
                                     }));
                                 }
@@ -1140,15 +1152,16 @@
 
             hours: {
                 title: '<i class="fa-solid fa-fire text-danger me-2"></i>Peak Sales Hours',
-                subtitle: 'Rush hour demand and hourly store activity patterns.',
-                badgeOne: 'Hourly Flow',
-                badgeTwo: 'Rush Hours',
+                subtitle: 'Hourly revenue and item sales activity patterns.',
+                badgeOne: 'Revenue',
+                badgeTwo: 'Items Sold',
                 type: 'line',
                 data: {
                     labels: hourLabels,
                     datasets: [{
-                        label: 'Sales (₱)',
+                        label: 'Revenue',
                         data: hourSales,
+                        yAxisID: 'y',
                         borderColor: '#0284c7',
                         backgroundColor: 'rgba(2, 132, 199, 0.18)',
                         borderWidth: 3,
@@ -1159,36 +1172,31 @@
                         pointBorderColor: '#0284c7',
                         pointBorderWidth: 2.5,
                         pointHoverRadius: 7
+                    }, {
+                        label: 'Items Sold',
+                        data: hourItemsSold,
+                        yAxisID: 'y1',
+                        borderColor: '#f97316',
+                        backgroundColor: '#f97316',
+                        borderWidth: 2.5,
+                        fill: false,
+                        tension: 0.35,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => ` Sales: ${peso(ctx.raw)}`
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { callback: v => '₱' + Number(v).toLocaleString(), font: { size: 10.5 } },
-                            grid: { color: '#f1f5f9' }
-                        },
-                        x: {
-                            ticks: { font: { size: 10.5 } },
-                            grid: { display: false }
-                        }
-                    }
-                }
+                options: dualAxisOptions()
             }
         };
 
         let activeChartInstance = null;
         let currentChartKey = 'daily';
+
+        function updateChartBadge(id, text) {
+            const badge = document.getElementById(id);
+            badge.hidden = !text;
+            if (text) badge.innerText = text;
+        }
 
         function renderChart(key) {
             const conf = chartConfigs[key];
@@ -1198,8 +1206,8 @@
             // Update header & badges
             document.getElementById('mainChartTitle').innerHTML = conf.title;
             document.getElementById('mainChartSubtitle').innerText = conf.subtitle;
-            document.getElementById('badgeOne').innerText = conf.badgeOne;
-            document.getElementById('badgeTwo').innerText = conf.badgeTwo;
+            updateChartBadge('badgeOne', conf.badgeOne);
+            updateChartBadge('badgeTwo', conf.badgeTwo);
 
             const canvas = document.getElementById('activeMainChart');
             if (activeChartInstance) {

@@ -58,6 +58,13 @@ class DashboardController extends Controller
 
         $products = $salesPerProduct->keys()->toArray();
         $sales = $salesPerProduct->values()->toArray();
+        $productQuantityMap = $orderItems->groupBy('product')->map(function ($items) {
+            return (int) $items->sum('qty');
+        });
+        $product_items_sold = array_map(
+            fn($product) => (int) $productQuantityMap->get($product, 0),
+            $products
+        );
 
         $total_sales_sum = array_sum($sales) ?: 1;
         $sales_percent = [];
@@ -73,6 +80,11 @@ class DashboardController extends Controller
         // Monthly sales trend (last 12 continuous months zero-filled)
         $months = [];
         $month_sales = [];
+        $month_items_sold = [];
+
+        $monthlyItemsGrp = $orderItems->groupBy(function ($item) {
+            return Carbon::parse($item->created_at)->format('Y-m');
+        })->map(fn($group) => (int) $group->sum('qty'));
 
         if ($filter_date_from && $filter_date_to) {
             $monthlySalesGrp = $allOrders->groupBy(function ($order) {
@@ -82,6 +94,7 @@ class DashboardController extends Controller
             foreach ($monthlySalesGrp as $key => $val) {
                 $months[] = Carbon::createFromFormat('Y-m', $key)->format('M Y');
                 $month_sales[] = (float) $val;
+                $month_items_sold[] = (int) $monthlyItemsGrp->get($key, 0);
             }
         } else {
             // Generate continuous last 12 months timeline
@@ -96,13 +109,19 @@ class DashboardController extends Controller
 
                 $months[] = $label;
                 $month_sales[] = (float) $mSum;
+                $month_items_sold[] = (int) $monthlyItemsGrp->get($monthKey, 0);
             }
         }
 
         // Daily sales (last 7 days, complete with zero-filled empty days)
         $daily_labels = [];
         $daily_sales = [];
+        $daily_items_sold = [];
         $daily_rows = [];
+
+        $dailyItemsGrp = $orderItems->groupBy(function ($item) {
+            return Carbon::parse($item->created_at)->format('Y-m-d');
+        })->map(fn($group) => (int) $group->sum('qty'));
 
         if ($filter_date_from && $filter_date_to) {
             $start = Carbon::parse($filter_date_from);
@@ -131,6 +150,7 @@ class DashboardController extends Controller
             $dayCount = $dayOrders->count();
 
             $daily_sales[] = $daySum;
+            $daily_items_sold[] = (int) $dailyItemsGrp->get($dateStr, 0);
             $daily_rows[] = [
                 'date_label' => $dateLabel,
                 'orders_count' => $dayCount,
@@ -143,6 +163,11 @@ class DashboardController extends Controller
         // Weekly sales (Last 4 Weeks)
         $weekly_labels = [];
         $weekly_sales = [];
+        $weekly_items_sold = [];
+
+        $weeklyItemsGrp = $orderItems->groupBy(function ($item) {
+            return Carbon::parse($item->created_at)->startOfWeek()->format('Y-m-d');
+        })->map(fn($group) => (int) $group->sum('qty'));
 
         if ($filter_date_from && $filter_date_to) {
             $weeklySalesGrp = $allOrders->groupBy(function ($o) {
@@ -152,6 +177,7 @@ class DashboardController extends Controller
             foreach ($weeklySalesGrp as $k => $v) {
                 $weekly_labels[] = 'Wk ' . Carbon::parse($k)->format('M j');
                 $weekly_sales[] = (float) $v;
+                $weekly_items_sold[] = (int) $weeklyItemsGrp->get($k, 0);
             }
         } else {
             // Generate strictly last 4 weeks
@@ -167,12 +193,18 @@ class DashboardController extends Controller
 
                 $weekly_labels[] = $label;
                 $weekly_sales[] = (float) $sum;
+                $weekly_items_sold[] = (int) $weeklyItemsGrp->get($wStart->format('Y-m-d'), 0);
             }
         }
 
         // Peak Sales Hours (operating hours 8 AM to 10 PM continuous zero-filled timeline)
         $hour_labels = [];
         $hour_sales = [];
+        $hour_items_sold = [];
+
+        $hourItemsGrp = $orderItems->groupBy(function ($item) {
+            return (int) Carbon::parse($item->created_at)->format('H');
+        })->map(fn($group) => (int) $group->sum('qty'));
 
         if ($filter_date_from && $filter_date_to) {
             $hourSalesGrp = $allOrders->groupBy(function ($o) {
@@ -182,6 +214,7 @@ class DashboardController extends Controller
             foreach ($hourSalesGrp as $h => $v) {
                 $hour_labels[] = Carbon::createFromTime($h, 0, 0)->format('g A');
                 $hour_sales[] = (float) $v;
+                $hour_items_sold[] = (int) $hourItemsGrp->get($h, 0);
             }
         } else {
             // Generate continuous store operating hours timeline
@@ -203,6 +236,7 @@ class DashboardController extends Controller
 
                 $hour_labels[] = $hourLabel;
                 $hour_sales[] = (float) $hSum;
+                $hour_items_sold[] = (int) $hourItemsGrp->get($h, 0);
             }
         }
 
@@ -306,15 +340,20 @@ class DashboardController extends Controller
             'total_inventory',
             'products',
             'sales',
+            'product_items_sold',
             'sales_percent',
             'months',
             'month_sales',
+            'month_items_sold',
             'daily_labels',
             'daily_sales',
+            'daily_items_sold',
             'weekly_labels',
             'weekly_sales',
+            'weekly_items_sold',
             'hour_labels',
             'hour_sales',
+            'hour_items_sold',
             'sales_today',
             'sales_yesterday',
             'monthly_revenue',
